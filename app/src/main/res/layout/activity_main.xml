@@ -27,12 +27,19 @@
             android:layout_height="wrap_content" />
     </com.ruswizards.rwlab127.SpecialLinearLayout>
 
-    <com.ruswizards.rwlab127.CustomViewForList
+    <!--<com.ruswizards.rwlab127.CustomViewForList
         android:id="@+id/layout_custom"
         android:layout_below="@+id/layout_special"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </com.ruswizards.rwlab127.CustomViewForList>
+    </com.ruswizards.rwlab127.CustomViewForList>-->
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_below="@+id/layout_special"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
 
 
 </RelativeLayout>

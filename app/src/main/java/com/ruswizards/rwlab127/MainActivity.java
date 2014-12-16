@@ -6,25 +6,51 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private static final String LOG_TAG = "MainActivity";
+    private ListView listView_;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CustomViewForList customViewForList = (CustomViewForList)findViewById(R.id.layout_custom);
-        customViewForList.customViewSetTitle("2342");
-        customViewForList.customViewSetDetails("adsadasfafsf");
+        List<CustomViewForList> customArray  = new ArrayList<CustomViewForList>();
+
+        for (int i = 0; i < 10; i++){
+            CustomViewForList customViewForList = new CustomViewForList(this, randomString(5), randomString(10), new Random().nextInt(5));
+            customArray.add(customViewForList);
+        }
+
+        listView_ = (ListView)findViewById(R.id.list_view);
+        CustomAdapter customAdapter = new CustomAdapter(this, customArray);
+        listView_.setAdapter(customAdapter);
     }
+
+    private String randomString(int length) {
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        char temp;
+        for (int i = 0; i < length; i++){
+            temp = (char) (generator.nextInt(96) + 32);
+            randomStringBuilder.append(temp);
+        }
+        return randomStringBuilder.toString();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,10 +72,6 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void justTest(View view) {
-        Log.d(LOG_TAG, "Clicked");
     }
 
     public void onSpecialClick(View v){
