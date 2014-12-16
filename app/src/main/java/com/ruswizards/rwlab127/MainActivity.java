@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -17,7 +20,10 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(LOG_TAG, "Started");
+
+        CustomViewForList customViewForList = (CustomViewForList)findViewById(R.id.layout_custom);
+        customViewForList.customViewSetTitle("2342");
+        customViewForList.customViewSetDetails("adsadasfafsf");
     }
 
     @Override
