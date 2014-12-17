@@ -2,25 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="70dp"
+    >
 
     <ImageView
         android:id="@+id/imagePicture"
-        android:layout_width="20dp"
-        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@android:drawable/btn_star_big_on"/>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/text_view_list_title"
+            style="@style/TextTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title" />
         <TextView
             android:id="@+id/text_view_list_details"
+            style="@style/TextDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Details"

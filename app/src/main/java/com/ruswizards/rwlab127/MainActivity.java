@@ -15,6 +15,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.lucasr.dspec.DesignSpec;
+import org.lucasr.dspec.DesignSpecFrameLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,6 +29,7 @@ public class MainActivity extends ActionBarActivity {
     private static final String LOG_TAG = "MainActivity";
     private static final String STATE_LIST = "ListView";
     private List<CustomViewForList> customArray_;
+    private DesignSpecFrameLayout designSpecFrameLayout_;
 
 
     @Override
@@ -33,13 +37,16 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        designSpecFrameLayout_ = (DesignSpecFrameLayout)findViewById(R.id.design_spec_layout);
+
+
         if (savedInstanceState != null){
             customArray_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
         } else {
             customArray_ = new ArrayList<>();
             Random generator = new Random();
-            for (int i = 0; i < 10; i++) {
-                CustomViewForList customViewForList = new CustomViewForList(this, randomString(5), randomString(10), generator.nextInt(4));
+            for (int i = 0; i < 20; i++) {
+                CustomViewForList customViewForList = new CustomViewForList(this, randomString(5), randomString(15), generator.nextInt(4));
                 customArray_.add(customViewForList);
             }
         }
@@ -65,6 +72,7 @@ public class MainActivity extends ActionBarActivity {
         }*/
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        recyclerView.setBackgroundColor(getResources().getColor(R.color.abc_background_cache_hint_selector_material_dark));
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -109,8 +117,22 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
+        }
+        return super.onOptionsItemSelected(item);
+        */
+        DesignSpec designSpec = designSpecFrameLayout_.getDesignSpec();
+        switch (item.getItemId()){
+            case R.id.action_switch_baseline:
+                designSpec.setBaselineGridVisible(!designSpec.isBaselineGridVisible());
+                break;
+            case R.id.action_switch_spacing:
+                designSpec.setSpacingsVisible(!designSpec.areSpacingsVisible());
+                break;
+            case R.id.action_switch_keyline:
+                designSpec.setKeylinesVisible(!designSpec.areKeylinesVisible());
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

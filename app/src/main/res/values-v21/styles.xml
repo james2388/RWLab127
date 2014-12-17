@@ -4,4 +4,6 @@
     <style name="AppTheme" parent="AppTheme.Base">
         <!-- Customize your theme here. Using Material design-->
     </style>
+    <!--<style name="TextTitle" parent="android:TextAppearance.Material.Display3">
+    </style>-->
 </resources>
