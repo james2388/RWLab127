@@ -27,12 +27,12 @@
             android:layout_height="wrap_content" />
     </com.ruswizards.rwlab127.SpecialLinearLayout>
 
-    <!--<ListView
-        android:id="@+id/list_view"
+    <!--<com.ruswizards.rwlab127.CustomViewForList
+        android:id="@+id/layout_custom"
         android:layout_below="@+id/layout_special"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </ListView>-->
+    </com.ruswizards.rwlab127.CustomViewForList>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

@@ -1,11 +1,15 @@
 package com.ruswizards.rwlab127;
 
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -40,9 +44,37 @@ public class MainActivity extends ActionBarActivity {
             }
         }
 
-        ListView listView = (ListView) findViewById(R.id.list_view);
-        CustomAdapter customAdapter = new CustomAdapter(this, customArray_);
-        listView.setAdapter(customAdapter);
+        /*if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            ListView listView = (ListView) findViewById(R.id.list_view);
+            CustomAdapter customAdapter = new CustomAdapter(this, customArray_);
+            listView.setAdapter(customAdapter);
+        } else {
+            RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+//            mRecyclerView.setHasFixedSize(true);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+            // specify an adapter
+//            mAdapter = new MyAdapter(myDataset);
+//            mRecyclerView.setAdapter(mAdapter);
+            CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(customArray_);
+            recyclerView.setAdapter(customRecyclerViewAdapter);
+        }*/
+
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+//            mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        // specify an adapter
+        CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(customArray_);
+        recyclerView.setAdapter(customRecyclerViewAdapter);
     }
 
     @Override
