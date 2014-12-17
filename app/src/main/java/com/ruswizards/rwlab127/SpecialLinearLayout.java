@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Custom view with additional attribute onSpecialClick which same as onClick for other views
+ * Custom view with additional attribute onSpecialClick which are the same as onClick for other views
  */
 public class SpecialLinearLayout extends LinearLayout {
 

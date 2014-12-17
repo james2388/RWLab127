@@ -6,12 +6,8 @@
 
     <ImageView
         android:id="@+id/imagePicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxHeight="20dp"
-        android:maxWidth="20dp"
-        android:minHeight="20dp"
-        android:minWidth="20dp"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
         android:src="@android:drawable/btn_star_big_on"/>
 
     <RelativeLayout

@@ -20,7 +20,8 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends ActionBarActivity {
 
     private static final String LOG_TAG = "MainActivity";
-    private ListView listView_;
+    private static final String STATE_LIST = "ListView";
+    private List<CustomViewForList> customArray_;
 
 
     @Override
@@ -28,16 +29,26 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<CustomViewForList> customArray  = new ArrayList<CustomViewForList>();
-
-        for (int i = 0; i < 10; i++){
-            CustomViewForList customViewForList = new CustomViewForList(this, randomString(5), randomString(10), new Random().nextInt(5));
-            customArray.add(customViewForList);
+        if (savedInstanceState != null){
+            customArray_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
+        } else {
+            customArray_ = new ArrayList<>();
+            Random generator = new Random();
+            for (int i = 0; i < 10; i++) {
+                CustomViewForList customViewForList = new CustomViewForList(this, randomString(5), randomString(10), generator.nextInt(4));
+                customArray_.add(customViewForList);
+            }
         }
 
-        listView_ = (ListView)findViewById(R.id.list_view);
-        CustomAdapter customAdapter = new CustomAdapter(this, customArray);
-        listView_.setAdapter(customAdapter);
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        CustomAdapter customAdapter = new CustomAdapter(this, customArray_);
+        listView.setAdapter(customAdapter);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(STATE_LIST, (java.io.Serializable) customArray_);
+        super.onSaveInstanceState(outState);
     }
 
     private String randomString(int length) {
@@ -50,7 +61,6 @@ public class MainActivity extends ActionBarActivity {
         }
         return randomStringBuilder.toString();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -70,7 +80,6 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
