@@ -1,5 +1,6 @@
 package com.ruswizards.rwlab127;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +33,6 @@ public class MainActivity extends ActionBarActivity {
 
 		designSpecFrameLayout_ = (DesignSpecFrameLayout) findViewById(R.id.design_spec_layout);
 
-
 		if (savedInstanceState != null) {
 			customArray_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
 		} else {
@@ -44,38 +44,19 @@ public class MainActivity extends ActionBarActivity {
 			}
 		}
 
-        /*if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-			ListView listView = (ListView) findViewById(R.id.list_view);
-            CustomAdapter customAdapter = new CustomAdapter(this, customArray_);
-            listView.setAdapter(customAdapter);
-        } else {
-            RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
-
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
-//            mRecyclerView.setHasFixedSize(true);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
-
-            // specify an adapter
-//            mAdapter = new MyAdapter(myDataset);
-//            mRecyclerView.setAdapter(mAdapter);
-            CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(customArray_);
-            recyclerView.setAdapter(customRecyclerViewAdapter);
-        }*/
-
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 		recyclerView.setBackgroundColor(getResources().getColor(R.color.abc_background_cache_hint_selector_material_dark));
 
-		// use this setting to improve performance if you know that changes
-		// in content do not change the layout size of the RecyclerView
-//            mRecyclerView.setHasFixedSize(true);
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(linearLayoutManager);
 
 		// specify an adapter
 		CustomRecyclerViewAdapter customRecyclerViewAdapter = new CustomRecyclerViewAdapter(customArray_);
 		recyclerView.setAdapter(customRecyclerViewAdapter);
+		recyclerView.addItemDecoration(
+				new DividersItemDecoration(getResources().getDrawable(R.drawable.divider),
+						(int)getResources().getDimension(R.dimen.list_padding_left))
+		);
 	}
 
 	@Override
@@ -99,6 +80,7 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
+
 		return true;
 	}
 

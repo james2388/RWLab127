@@ -5,4 +5,5 @@
 	<dimen name="text_size_subhead_material">16sp</dimen>
 	<dimen name="text_size_body1_material">14sp</dimen>
 	<dimen name="text_size_title_material">20sp</dimen>
+	<dimen name="list_padding_left">72dp</dimen>
 </resources>
