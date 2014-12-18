@@ -13,8 +13,8 @@
             <!-- colorAccent is used as the default value for colorControlActivated
                  which is used to tint widgets -->
             <item name="colorAccent">#FF5252</item>
-
-            <item name="android:textColorPrimary">@color/primary_text_default_material_light</item>
+			<item name="android:textColorPrimary">#212121</item>
+			<item name="android:textColorSecondary">#727272</item>
         </style>
     <style name="TextTitle">
         <item name="android:textSize">@dimen/abc_text_size_title_material</item>

@@ -14,7 +14,7 @@
             <com.ruswizards.rwlab127.SpecialLinearLayout
                 android:id="@+id/layout_special"
                 android:elevation="2dp"
-                android:background="?android:attr/selectableItemBackground"
+                android:background="@drawable/ripple"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:orientation="vertical"
