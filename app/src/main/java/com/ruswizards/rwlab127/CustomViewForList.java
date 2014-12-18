@@ -7,17 +7,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
+
 /**
  * Copyright (C) 2014 Rus Wizards
  * <p/>
  * Created: 16.12.2014
  * Vladimir Farafonov
  */
-public class CustomViewForList extends LinearLayout {
+public class CustomViewForList extends LinearLayout implements Serializable {
 
-	private TextView textViewTitle_;
-	private TextView textViewDetails_;
-	private ImageView imageView_;
+	private String title_;
+	private String details_;
 	private int imageViewResource_ = 0;
 
 	public CustomViewForList(Context context) {
@@ -32,16 +33,18 @@ public class CustomViewForList extends LinearLayout {
 		super(context, attrs, defStyleAttr);
 		LayoutInflater layoutInflater = LayoutInflater.from(context);
 		layoutInflater.inflate(R.layout.custom_view_for_list, this);
-		textViewTitle_ = (TextView) findViewById(R.id.text_view_list_title);
-		textViewDetails_ = (TextView) findViewById(R.id.text_view_list_details);
-		imageView_ = (ImageView) findViewById(R.id.imagePicture);
 	}
 
 	public CustomViewForList(Context context, String title, String details, int imageNum) {
 		this(context, null);
-		textViewTitle_.setText(title);
-		textViewDetails_.setText(details);
-		imageView_.setImageResource(R.drawable.android_wrench);
+		title_ = title;
+		TextView textViewTitle = (TextView) findViewById(R.id.text_view_list_title);
+		textViewTitle.setText(title);
+		details_ = details;
+		TextView textViewDetails = (TextView) findViewById(R.id.text_view_list_details);
+		textViewDetails.setText(details);
+		ImageView imageView = (ImageView) findViewById(R.id.imagePicture);
+		imageView.setImageResource(R.drawable.android_wrench);
 		switch (imageNum) {
 			case 0:
 				imageViewResource_ = android.R.drawable.btn_star_big_on;
@@ -56,23 +59,15 @@ public class CustomViewForList extends LinearLayout {
 				imageViewResource_ = android.R.drawable.ic_dialog_alert;
 				break;
 		}
-		imageView_.setImageResource(imageViewResource_);
-	}
-
-	public void customViewSetTitle(String title) {
-		textViewTitle_.setText(title);
-	}
-
-	public void customViewSetDetails(String details) {
-		textViewDetails_.setText(details);
+		imageView.setImageResource(imageViewResource_);
 	}
 
 	public String getTitle() {
-		return textViewTitle_.getText().toString();
+		return title_;
 	}
 
 	public String getDetails() {
-		return textViewDetails_.getText().toString();
+		return details_;
 	}
 
 	public int getImageResource() {
