@@ -7,5 +7,9 @@
     <string name="text_view_details">Details</string>
     <string name="toast_text">Just some short message</string>
 	<color name="ripple_color">#1976D2</color>
+	<color name="textColorPrimary">#212121</color>
+	<string name="font_family_sans_serif">sans-serif</string>
+	<string name="font_family_sans_serif_medium">sans-serif-medium</string>
+
 
 </resources>

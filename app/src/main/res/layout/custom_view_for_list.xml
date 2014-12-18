@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="70dp"
-    >
-
+	android:layout_width="match_parent"
+	android:layout_height="72dp"
+	android:orientation="horizontal"
+	android:padding="12dp" >
     <ImageView
-        android:id="@+id/imagePicture"
-        android:layout_gravity="center"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@android:drawable/btn_star_big_on"/>
-
+		android:id="@+id/imagePicture"
+		android:layout_gravity="center"
+		android:layout_width="48dp"
+		android:layout_height="48dp"
+		android:padding="4dp"
+		android:src="@android:drawable/btn_star_big_on"/>
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingEnd="16dp"
-        android:gravity="center_vertical">
-
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingLeft="12dp"
+		android:paddingStart="12dp"
+		android:paddingRight="4dp"
+		android:paddingEnd="4dp"
+		android:gravity="center_vertical">
         <TextView
             android:id="@+id/text_view_list_title"
             style="@style/TextTitle"
@@ -34,6 +32,5 @@
             android:layout_height="wrap_content"
             android:text="Details"
             android:layout_below="@+id/text_view_list_title" />
-
     </RelativeLayout>
 </LinearLayout>

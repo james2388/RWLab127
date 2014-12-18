@@ -13,20 +13,28 @@
             <!-- colorAccent is used as the default value for colorControlActivated
                  which is used to tint widgets -->
             <item name="colorAccent">#FF5252</item>
-			<item name="android:textColorPrimary">#212121</item>
+			<item name="android:textColorPrimary">@color/textColorPrimary</item>
 			<item name="android:textColorSecondary">#727272</item>
         </style>
     <style name="TextTitle">
-        <item name="android:textSize">@dimen/abc_text_size_title_material</item>
-    </style>
+        <item name="android:textSize">@dimen/text_size_subhead_material</item>
+		<item name="android:fontFamily">@string/font_family_sans_serif</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
+	</style>
     <style name="TextDetails">
-        <item name="android:textSize">@dimen/abc_text_size_subhead_material</item>
+        <item name="android:textSize">@dimen/text_size_body1_material</item>
+		<item name="android:fontFamily">@string/font_family_sans_serif</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
     <style name="HeaderTextTitle">
-        <item name="android:textSize">@dimen/abc_text_size_display_1_material</item>
-    </style>
+        <item name="android:textSize">@dimen/text_size_title_material</item>
+		<item name="android:fontFamily">@string/font_family_sans_serif</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
+	</style>
     <style name="HeaderTextDetails">
         <item name="android:textSize">@dimen/abc_text_size_headline_material</item>
     </style>
+
+
 </resources>

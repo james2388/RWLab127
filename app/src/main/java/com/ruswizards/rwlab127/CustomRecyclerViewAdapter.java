@@ -1,7 +1,5 @@
 package com.ruswizards.rwlab127;
 
-import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,45 +17,44 @@ import java.util.List;
  */
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
 
-    private List<CustomViewForList> listItems_;
+	private List<CustomViewForList> listItems_;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+	public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textViewTitle;
-        public TextView textViewDetails;
-        public ImageView imageViewIcon;
+		public TextView textViewTitle;
+		public TextView textViewDetails;
+		public ImageView imageViewIcon;
 
-        //TODO: make constructor
-        public ViewHolder(View itemView) {
-            super(itemView);
-            textViewTitle = (TextView)itemView.findViewById(R.id.text_view_list_title);
-            textViewDetails = (TextView)itemView.findViewById(R.id.text_view_list_details);
-            imageViewIcon = (ImageView)itemView.findViewById(R.id.imagePicture);
-        }
-    }
+		public ViewHolder(View itemView) {
+			super(itemView);
+			textViewTitle = (TextView) itemView.findViewById(R.id.text_view_list_title);
+			textViewDetails = (TextView) itemView.findViewById(R.id.text_view_list_details);
+			imageViewIcon = (ImageView) itemView.findViewById(R.id.imagePicture);
+		}
+	}
 
-    public CustomRecyclerViewAdapter(List<CustomViewForList> listItems){
-        listItems_ = listItems;
-    }
+	public CustomRecyclerViewAdapter(List<CustomViewForList> listItems) {
+		listItems_ = listItems;
+	}
 
-    @Override
-    public CustomRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.custom_view_for_list, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(v);
-        return viewHolder;
-    }
+	@Override
+	public CustomRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+		View v = LayoutInflater.from(viewGroup.getContext())
+				.inflate(R.layout.custom_view_for_list, viewGroup, false);
+		ViewHolder viewHolder = new ViewHolder(v);
+		return viewHolder;
+	}
 
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        CustomViewForList item = listItems_.get(i);
-        viewHolder.textViewTitle.setText(item.getTitle());
-        viewHolder.textViewDetails.setText(item.getDetails());
-        viewHolder.imageViewIcon.setImageResource(item.getImageResource());
-    }
+	@Override
+	public void onBindViewHolder(ViewHolder viewHolder, int i) {
+		CustomViewForList item = listItems_.get(i);
+		viewHolder.textViewTitle.setText(item.getTitle());
+		viewHolder.textViewDetails.setText(item.getDetails());
+		viewHolder.imageViewIcon.setImageResource(item.getImageResource());
+	}
 
-    @Override
-    public int getItemCount() {
-        return listItems_.size();
-    }
+	@Override
+	public int getItemCount() {
+		return listItems_.size();
+	}
 }
