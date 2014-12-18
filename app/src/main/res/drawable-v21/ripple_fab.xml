@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+		android:color="?android:colorControlHighlight">
+	<item>
+		<shape android:shape="oval">
+			<solid android:color="?android:colorAccent" />
+		</shape>
+	</item>
+</ripple>-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		  android:state_pressed="true">
+		<set>
+			<objectAnimator android:propertyName="translationZ"
+							android:duration="@android:integer/config_shortAnimTime"
+							android:valueFrom="0dp"
+							android:valueTo="4dp"
+							android:valueType="floatType"/>
+		</set>
+	</item>
+	<item android:state_enabled="true"
+		  android:state_pressed="false"
+		  android:state_focused="true">
+		<set>
+			<objectAnimator android:propertyName="translationZ"
+							android:duration="@android:integer/config_shortAnimTime"
+							android:valueFrom="4dp"
+							android:valueTo="0dp"
+							android:valueType="floatType"/>
+		</set>
+    </item>
+</selector>
