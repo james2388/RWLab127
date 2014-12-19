@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	<!--Container shape-->
+	<item>
+		<shape>
+			<size android:height="50dp"
+				  android:width="50dp"/>
+		</shape>
+	</item>
+	<!--Button shape-->
+	<item android:bottom="7dp"
+		  android:left="7dp"
+		  android:right="7dp"
+		  android:top="7dp">
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:height="40dp"
+						android:width="40dp"/>
+					<solid android:color="@color/accent"/>
+				</shape>
+			</item>
+			<item android:left="8dp"
+				  android:right="8dp">
+				<shape android:shape="line">
+					<stroke android:width="2dp"
+							android:color="@color/background_material_light"/>
+				</shape>
+			</item>
+			<item android:left="8dp"
+				  android:right="8dp">
+				<rotate android:fromDegrees="90"
+						android:toDegrees="90">
+					<shape android:shape="line">
+						<stroke android:width="2dp"
+								android:color="@color/background_material_light"/>
+					</shape>
+				</rotate>
+			</item>
+		</layer-list>
+	</item>
+
+</layer-list>

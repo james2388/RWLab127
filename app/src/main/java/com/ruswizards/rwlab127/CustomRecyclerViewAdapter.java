@@ -1,3 +1,9 @@
+/**
+ * Copyright (C) 2014 Rus Wizards
+ * <p/>
+ * Created: 17.12.2014
+ * Vladimir Farafonov
+ */
 package com.ruswizards.rwlab127;
 
 import android.support.v7.widget.RecyclerView;
@@ -10,15 +16,16 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Copyright (C) 2014 Rus Wizards
- * <p/>
- * Created: 17.12.2014
- * Vladimir Farafonov
+ * Custom adapter based on RecyclerView.Adapter
  */
-public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
+public class CustomRecyclerViewAdapter extends
+		RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
 
 	private List<CustomViewForList> listItems_;
 
+	/**
+	 * ViewHolder class. Extends RecyclerView.ViewHolder
+	 */
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 
 		public TextView textViewTitle;
@@ -37,6 +44,9 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 		listItems_ = listItems;
 	}
 
+	/**
+	 * Creates view holder.
+	 */
 	@Override
 	public CustomRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 		View v = LayoutInflater.from(viewGroup.getContext())
@@ -45,6 +55,11 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 		return viewHolder;
 	}
 
+	/**
+	 * Fills in views in view holder on bind
+	 * @param viewHolder
+	 * @param i item number
+	 */
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, int i) {
 		CustomViewForList item = listItems_.get(i);
@@ -53,6 +68,9 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 		viewHolder.imageViewIcon.setImageResource(item.getImageResource());
 	}
 
+	/**
+	 * Counts elements
+	 */
 	@Override
 	public int getItemCount() {
 		return listItems_.size();

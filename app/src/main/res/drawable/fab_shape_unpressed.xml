@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	<!--Container shape-->
+	<item>
+		<shape>
+			<size android:height="50dp"
+				  android:width="50dp"/>
+		</shape>
+	</item>
+	<!--Gradient shadow-->
+	<item android:top="5dp"
+		android:right="4dp"
+		android:left="4dp">
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<gradient android:type="radial"
+							  android:startColor="#30000000"
+							  android:endColor="#10000000"
+							  android:gradientRadius="50"/>
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+	<!--Button shape-->
+	<item android:bottom="5dp"
+		  android:left="5dp"
+		  android:right="5dp"
+		  android:top="5dp">
+		<layer-list>
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:height="40dp"
+						android:width="40dp"/>
+					<solid android:color="@color/accent"/>
+				</shape>
+			</item>
+			<item android:left="8dp"
+				  android:right="8dp">
+				<shape android:shape="line">
+					<stroke android:width="2dp"
+							android:color="@color/background_material_light"/>
+				</shape>
+			</item>
+			<item android:left="8dp"
+				  android:right="8dp">
+				<rotate android:fromDegrees="90"
+						android:toDegrees="90">
+					<shape android:shape="line">
+						<stroke android:width="2dp"
+								android:color="@color/background_material_light"/>
+					</shape>
+				</rotate>
+			</item>
+		</layer-list>
+	</item>
+</layer-list>
