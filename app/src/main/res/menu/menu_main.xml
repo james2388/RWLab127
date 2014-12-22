@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item
         android:id="@+id/action_switch_baseline"
-        android:title="On/off base"
         android:orderInCategory="100"
-        app:showAsAction="never"/>
+		android:title="@string/menu_title_switch_base"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_switch_keyline"
-        android:title="On/off key"
         android:orderInCategory="100"
-        app:showAsAction="never"/>
+		android:title="@string/menu_title_switch_key"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_switch_spacing"
-        android:title="On/off spacing"
         android:orderInCategory="100"
-        app:showAsAction="never"/>
+		android:title="@string/menu_title_switch_spacing"
+		app:showAsAction="never"/>
 </menu>

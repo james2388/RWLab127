@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="72dp"
+	android:layout_height="@dimen/height_recycler_view_tile"
 	android:orientation="horizontal"
-	android:padding="12dp" >
+	android:padding="@dimen/padding_recycler_view_tile" >
     <ImageView
 		android:id="@+id/imagePicture"
+		android:contentDescription="@string/image_description"
 		android:layout_gravity="center"
-		android:layout_width="48dp"
-		android:layout_height="48dp"
-		android:padding="4dp"
-		android:src="@android:drawable/btn_star_big_on"/>
+		android:layout_width="@dimen/size_icon_recycler_view_item"
+		android:layout_height="@dimen/size_icon_recycler_view_item"
+		android:padding="@dimen/padding_icon_recycler_view_item" />
     <RelativeLayout
+		android:gravity="center_vertical"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:paddingLeft="12dp"
-		android:paddingStart="12dp"
-		android:paddingRight="4dp"
-		android:paddingEnd="4dp"
-		android:gravity="center_vertical">
+		android:paddingLeft="@dimen/padding_left_inner_layout_recycler_view_item"
+		android:paddingStart="@dimen/padding_left_inner_layout_recycler_view_item"
+		android:paddingRight="@dimen/padding_right_inner_layout_recycler_view_item"
+		android:paddingEnd="@dimen/padding_right_inner_layout_recycler_view_item" >
         <TextView
             android:id="@+id/text_view_list_title"
-            style="@style/TextTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title" />
+            style="@style/TextTitle" />
         <TextView
-            android:id="@+id/text_view_list_details"
-            style="@style/TextDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Details"
-            android:layout_below="@+id/text_view_list_title" />
+        	android:id="@+id/text_view_list_details"
+			android:layout_below="@+id/text_view_list_title"
+			android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	style="@style/TextDetails" />
     </RelativeLayout>
 </LinearLayout>

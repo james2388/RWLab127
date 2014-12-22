@@ -2,8 +2,29 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
+
 	<dimen name="text_size_subhead_material">16sp</dimen>
 	<dimen name="text_size_body1_material">14sp</dimen>
 	<dimen name="text_size_title_material">20sp</dimen>
-	<dimen name="list_padding_left">72dp</dimen>
+	<dimen name="divider_padding_left">72dp</dimen>
+	<dimen name="elevation_header_tile">2dp</dimen>
+	<dimen name="height_upper_tile">72dp</dimen>
+	<dimen name="left_padding_upper_tile">72dp</dimen>
+	<dimen name="elevation_fab">4dp</dimen>
+	<dimen name="margin_fab">16dp</dimen>
+	<dimen name="height_recycler_view_tile">71dp</dimen>
+	<dimen name="padding_recycler_view_tile">12dp</dimen>
+	<dimen name="size_icon_recycler_view_item">48dp</dimen>
+	<dimen name="padding_icon_recycler_view_item">4dp</dimen>
+	<dimen name="padding_left_inner_layout_recycler_view_item">12dp</dimen>
+	<dimen name="padding_right_inner_layout_recycler_view_item">4dp</dimen>
+	<dimen name="divider_height">1dp</dimen>
+	<dimen name="size_fab">40dp</dimen>
+	<dimen name="padding_plus_symbol_fab">8dp</dimen>
+	<dimen name="width_plus_symbol_fab">2dp</dimen>
+	<dimen name="size_container_fab">50dp</dimen>
+	<dimen name="padding_pressed_fab_in_container">7dp</dimen>
+	<dimen name="padding_unpressed_fab_in_container">5dp</dimen>
+	<dimen name="value_to_elevation_fab_pressed">-3dp</dimen>
+	<dimen name="value_to_elevation_fab_not_pressed">0dp</dimen>
 </resources>

@@ -10,6 +10,8 @@
         { "offset": 16,
           "from": "RIGHT" },
         { "offset": 72,
+          "from": "TOP" },
+        { "offset": 144,
           "from": "TOP" }
     ],
     "spacingsVisible": false,

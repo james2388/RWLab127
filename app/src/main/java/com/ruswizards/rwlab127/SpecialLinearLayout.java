@@ -35,9 +35,8 @@ public class SpecialLinearLayout extends LinearLayout {
 
 	/**
 	 * Checks if custom layouts' attributes have onSpecialClick. If onSpecialClick is there,
-	 * registers OnClickListener with action to start method in context activity. Method name must
-	 * be same as to content of onSpecialClick attribute.
-	 *
+	 * registers OnClickListener with action to start specialized in attribute method from context
+	 * activity. Method name must be same as to content of onSpecialClick attribute.
 	 * @param context      Contex
 	 * @param attrs        AttributeSet
 	 * @param defStyleAttr Reference to a style resource that supplies defaults values
@@ -47,7 +46,7 @@ public class SpecialLinearLayout extends LinearLayout {
 		TypedArray typedArray = context.obtainStyledAttributes(
 				attrs, R.styleable.SpecialLinearLayout, defStyleAttr, 0);
 		final int N = typedArray.getIndexCount();
-		// Check attributes if the have onSpecialClick one
+		// Check attributes for onSpecialClick one
 		for (int i = 0; i < N; i++) {
 			int atr = typedArray.getIndex(i);
 			switch (atr) {

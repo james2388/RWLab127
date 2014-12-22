@@ -1,44 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-	<!--Container shape-->
+	<!--Container-->
 	<item>
 		<shape>
-			<size android:height="50dp"
-				  android:width="50dp"/>
+			<size android:height="@dimen/size_container_fab"
+				  android:width="@dimen/size_container_fab"/>
 		</shape>
 	</item>
 	<!--Button shape-->
-	<item android:bottom="7dp"
-		  android:left="7dp"
-		  android:right="7dp"
-		  android:top="7dp">
+	<item android:bottom="@dimen/padding_pressed_fab_in_container"
+		  android:left="@dimen/padding_pressed_fab_in_container"
+		  android:right="@dimen/padding_pressed_fab_in_container"
+		  android:top="@dimen/padding_pressed_fab_in_container">
 		<layer-list>
 			<item>
 				<shape android:shape="oval">
 					<size
-						android:height="40dp"
-						android:width="40dp"/>
+						android:height="@dimen/size_fab"
+						android:width="@dimen/size_fab"/>
 					<solid android:color="@color/accent"/>
 				</shape>
 			</item>
-			<item android:left="8dp"
-				  android:right="8dp">
+			<item android:left="@dimen/padding_plus_symbol_fab"
+				  android:right="@dimen/padding_plus_symbol_fab">
 				<shape android:shape="line">
-					<stroke android:width="2dp"
+					<stroke android:width="@dimen/width_plus_symbol_fab"
 							android:color="@color/background_material_light"/>
 				</shape>
 			</item>
-			<item android:left="8dp"
-				  android:right="8dp">
+			<item android:left="@dimen/padding_plus_symbol_fab"
+				  android:right="@dimen/padding_plus_symbol_fab">
 				<rotate android:fromDegrees="90"
 						android:toDegrees="90">
 					<shape android:shape="line">
-						<stroke android:width="2dp"
+						<stroke android:width="@dimen/width_plus_symbol_fab"
 								android:color="@color/background_material_light"/>
 					</shape>
 				</rotate>
 			</item>
 		</layer-list>
 	</item>
-
 </layer-list>

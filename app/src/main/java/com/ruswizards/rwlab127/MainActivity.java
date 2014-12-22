@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -34,7 +33,6 @@ public class MainActivity extends ActionBarActivity {
 	private List<CustomViewForList> customArray_;
 	private DesignSpecFrameLayout designSpecFrameLayout_;
 	CustomRecyclerViewAdapter customRecyclerViewAdapter_;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +61,6 @@ public class MainActivity extends ActionBarActivity {
 
 		//Set up item touch listener
 		recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-			public static final String LOG_TAG = "MainActivity";
 			private float initialX_;
 			private float initialY_;
 			private float summX_;
@@ -137,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
 		recyclerView.setAdapter(customRecyclerViewAdapter_);
 		recyclerView.addItemDecoration(
 				new DividersItemDecoration(getResources().getDrawable(R.drawable.divider),
-						(int)getResources().getDimension(R.dimen.list_padding_left))
+						(int)getResources().getDimension(R.dimen.divider_padding_left))
 		);
 	}
 

@@ -24,7 +24,7 @@ public class CustomRecyclerViewAdapter extends
 	private List<CustomViewForList> listItems_;
 
 	/**
-	 * ViewHolder class. Extends RecyclerView.ViewHolder
+	 * ViewHolder class.
 	 */
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -56,7 +56,7 @@ public class CustomRecyclerViewAdapter extends
 	}
 
 	/**
-	 * Fills in views in view holder on bind
+	 * Fills in views in a view holder on bind
 	 * @param viewHolder
 	 * @param i item number
 	 */

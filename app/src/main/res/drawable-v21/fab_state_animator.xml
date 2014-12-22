@@ -4,7 +4,7 @@
 		<set>
 			<objectAnimator android:propertyName="translationZ"
 							android:duration="@android:integer/config_shortAnimTime"
-							android:valueTo="-3dp"
+							android:valueTo="@dimen/value_to_elevation_fab_pressed"
 							android:valueType="floatType"/>
 		</set>
 	</item>
@@ -12,7 +12,7 @@
 		<set>
 			<objectAnimator android:propertyName="translationZ"
 							android:duration="@android:integer/config_longAnimTime"
-							android:valueTo="0dp"
+							android:valueTo="@dimen/value_to_elevation_fab_not_pressed"
 							android:valueType="floatType"/>
 		</set>
     </item>

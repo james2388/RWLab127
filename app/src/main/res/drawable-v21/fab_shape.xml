@@ -3,24 +3,24 @@
 	<item>
 		<shape android:shape="oval">
 			<size
-				android:height="40dp"
-				android:width="40dp"/>
+				android:height="@dimen/size_fab"
+				android:width="@dimen/size_fab"/>
 			<solid android:color="@color/accent"/>
 		</shape>
 	</item>
-	<item android:left="8dp"
-		android:right="8dp">
+	<item android:left="@dimen/padding_plus_symbol_fab"
+		android:right="@dimen/padding_plus_symbol_fab">
 		<shape android:shape="line">
-			<stroke android:width="2dp"
+			<stroke android:width="@dimen/width_plus_symbol_fab"
 					android:color="@color/background_material_light"/>
 		</shape>
 	</item>
-	<item android:left="8dp"
-		  android:right="8dp">
+	<item android:left="@dimen/padding_plus_symbol_fab"
+		  android:right="@dimen/padding_plus_symbol_fab">
 		<rotate android:fromDegrees="90"
 				android:toDegrees="90">
 				<shape android:shape="line">
-					<stroke android:width="2dp"
+					<stroke android:width="@dimen/width_plus_symbol_fab"
 							android:color="@color/background_material_light"/>
 				</shape>
 		</rotate>
