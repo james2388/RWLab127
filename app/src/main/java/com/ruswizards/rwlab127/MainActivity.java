@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -62,18 +63,19 @@ public class MainActivity extends ActionBarActivity {
 
 		//Set up item touch listener
 		recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+			public static final String LOG_TAG = "MainActivity";
 			private float initialX_;
 			private float initialY_;
-			private float summX_ = 0;
-			private float summY_ = 0;
-			private float tempX_ = 0;
-			private float tempY_ = 0;
+			private float summX_;
+			private float summY_;
+			private float tempX_;
+			private float tempY_;
 
 			/**
 			 * Monitors touches inside Recycler View. If got an action up motion event, checks if
-			 * previously was swiping right and if it was there calls
-			 * {@link #deleteItem(android.support.v7.widget.RecyclerView)}
-			 * to delete item.
+			 * previously was swiping right gesture. After detecting right swipe gesture calls
+			 * {@link #deleteItem(android.support.v7.widget.RecyclerView)} to delete first touched
+			 * item.
 			 * @param rv Recycler View object
 			 * @param e motion event
 			 * @return false to handle motion event to super. True to handle motion event
@@ -86,19 +88,21 @@ public class MainActivity extends ActionBarActivity {
 					// Save coordinates of touch
 					initialX_ = e.getX();
 					initialY_ = e.getY();
+					summX_ = 0;
+					summY_ = 0;
 					tempX_ = e.getX();
 					tempY_ = e.getY();
 					return false;
 				} else if (action == MotionEvent.ACTION_MOVE){
 					// Counts overall movement while touch continues
-					summX_ = e.getX() - tempX_;
-					summY_ = e.getY() - tempY_;
-					tempX_ = e.getX() - tempX_;
-					tempY_ = e.getX() - tempY_;
+					summX_ = summX_ + e.getX() - tempX_;
+					summY_ = summY_ + e.getY() - tempY_;
+					tempX_ = e.getX();
+					tempY_ = e.getY();
 					return false;
 				} else if (action == MotionEvent.ACTION_UP){
 					// Delete item if swiped to the right
-					if (summX_ > 0 && Math.abs(summX_) > Math.abs(summY_)){
+					if (summX_ > 0 && summX_ > Math.abs(summY_)){
 						deleteItem(rv);
 					}
 					return false;
@@ -128,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
-		// specify an adapter
+		// Specify an adapter
 		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(customArray_);
 		recyclerView.setAdapter(customRecyclerViewAdapter_);
 		recyclerView.addItemDecoration(
