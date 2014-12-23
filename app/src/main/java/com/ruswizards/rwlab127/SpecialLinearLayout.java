@@ -37,7 +37,8 @@ public class SpecialLinearLayout extends LinearLayout {
 	 * Checks if custom layouts' attributes have onSpecialClick. If onSpecialClick is there,
 	 * registers OnClickListener with action to start specialized in attribute method from context
 	 * activity. Method name must be same as to content of onSpecialClick attribute.
-	 * @param context      Contex
+	 *
+	 * @param context      Context
 	 * @param attrs        AttributeSet
 	 * @param defStyleAttr Reference to a style resource that supplies defaults values
 	 */
@@ -45,19 +46,19 @@ public class SpecialLinearLayout extends LinearLayout {
 			Context context, AttributeSet attrs, int defStyleAttr) {
 		TypedArray typedArray = context.obtainStyledAttributes(
 				attrs, R.styleable.SpecialLinearLayout, defStyleAttr, 0);
-		final int N = typedArray.getIndexCount();
-		// Check attributes for onSpecialClick one
-		for (int i = 0; i < N; i++) {
+		int indexCount = typedArray.getIndexCount();
+		// Search onSpecialClick from attributes
+		for (int i = 0; i < indexCount; i++) {
 			int atr = typedArray.getIndex(i);
 			switch (atr) {
 				case R.styleable.SpecialLinearLayout_onSpecialClick:
-//                    Check if context is restricted
+					// Check if context is restricted
 					if (context.isRestricted()) {
 						throw new IllegalStateException("The android:onSpecialClick attribute" +
 								" cannot be used within a restricted context");
 					}
 					final String handlerName = typedArray.getString(atr);
-//                    Set up OnClickListener if there is a method name inside onSpecialClick attribute
+					// Set up OnClickListener if there is a method name inside onSpecialClick attribute
 					if (handlerName != null) {
 						setOnClickListener(new OnClickListener() {
 							private Method handler_;
@@ -65,7 +66,7 @@ public class SpecialLinearLayout extends LinearLayout {
 							@Override
 							public void onClick(View v) {
 								if (handler_ == null) {
-//                                    Try to find method in context activity
+									// Try to find method in context activity
 									try {
 										handler_ = getContext().getClass().getMethod(handlerName,
 												View.class);
@@ -76,7 +77,7 @@ public class SpecialLinearLayout extends LinearLayout {
 												"on View" + SpecialLinearLayout.this.getClass(), e);
 									}
 								}
-//                                Try to call method from context activity
+								// Try to call method from context activity
 								try {
 									handler_.invoke(getContext(), SpecialLinearLayout.this);
 								} catch (IllegalAccessException e) {

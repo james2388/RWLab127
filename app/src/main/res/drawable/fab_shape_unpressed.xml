@@ -1,55 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<!--Container-->
 	<item>
 		<shape>
-			<size android:height="@dimen/size_container_fab"
-				  android:width="@dimen/size_container_fab"/>
+			<size
+				android:width="@dimen/fab_container_size"
+				android:height="@dimen/fab_container_size"/>
 		</shape>
 	</item>
 	<!--Gradient shadow-->
-	<item android:top="5dp"
+	<item
+		android:left="4dp"
 		android:right="4dp"
-		android:left="4dp">
+		android:top="5dp">
 		<layer-list>
 			<item>
 				<shape android:shape="oval">
-					<gradient android:type="radial"
-							  android:startColor="#30000000"
-							  android:endColor="#10000000"
-							  android:gradientRadius="50"/>
+					<gradient
+						android:endColor="#10000000"
+						android:gradientRadius="50"
+						android:startColor="#30000000"
+						android:type="radial"/>
 				</shape>
 			</item>
 		</layer-list>
 	</item>
 	<!--Button shape-->
-	<item android:bottom="@dimen/padding_unpressed_fab_in_container"
-		  android:left="@dimen/padding_unpressed_fab_in_container"
-		  android:right="@dimen/padding_unpressed_fab_in_container"
-		  android:top="@dimen/padding_unpressed_fab_in_container">
+	<item
+		android:bottom="@dimen/fab_unpressed_padding"
+		android:left="@dimen/fab_unpressed_padding"
+		android:right="@dimen/fab_unpressed_padding"
+		android:top="@dimen/fab_unpressed_padding">
 		<layer-list>
 			<item>
 				<shape android:shape="oval">
 					<size
-						android:height="@dimen/size_fab"
-						android:width="@dimen/size_fab"/>
+						android:width="@dimen/fab_size"
+						android:height="@dimen/fab_size"/>
 					<solid android:color="@color/accent"/>
 				</shape>
 			</item>
-			<item android:left="@dimen/padding_plus_symbol_fab"
-				  android:right="@dimen/padding_plus_symbol_fab">
+			<item
+				android:left="@dimen/fab_plus_symbol_padding"
+				android:right="@dimen/fab_plus_symbol_padding">
 				<shape android:shape="line">
-					<stroke android:width="@dimen/width_plus_symbol_fab"
-							android:color="@color/background_material_light"/>
+					<stroke
+						android:width="@dimen/fab_plus_symbol_width"
+						android:color="@color/background_material_light"/>
 				</shape>
 			</item>
-			<item android:left="@dimen/padding_plus_symbol_fab"
-				  android:right="@dimen/padding_plus_symbol_fab">
-				<rotate android:fromDegrees="90"
-						android:toDegrees="90">
+			<item
+				android:left="@dimen/fab_plus_symbol_padding"
+				android:right="@dimen/fab_plus_symbol_padding">
+				<rotate
+					android:fromDegrees="90"
+					android:toDegrees="90">
 					<shape android:shape="line">
-						<stroke android:width="@dimen/width_plus_symbol_fab"
-								android:color="@color/background_material_light"/>
+						<stroke
+							android:width="@dimen/fab_plus_symbol_width"
+							android:color="@color/background_material_light"/>
 					</shape>
 				</rotate>
 			</item>

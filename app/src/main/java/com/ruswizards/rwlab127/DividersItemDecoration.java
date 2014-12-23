@@ -1,99 +1,95 @@
-package com.ruswizards.rwlab127;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-
 /**
  * Copyright (C) 2014 Rus Wizards
  * <p/>
  * Created: 18.12.2014
  * Vladimir Farafonov
  */
-public class DividersItemDecoration extends RecyclerView.ItemDecoration {
+package com.ruswizards.rwlab127;
 
-	private Drawable dividerImage_;
-	private int leftPadding_;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-	public DividersItemDecoration(Context context, AttributeSet attributeSet){
-		final TypedArray typedArray = context.obtainStyledAttributes(attributeSet, new int[]{android.R.attr.listDivider});
-		dividerImage_ = typedArray.getDrawable(0);
-		typedArray.recycle();
-	}
+/**
+ * Class to draw decoration (dividers) to RecyclerView
+ */
+class DividersItemDecoration extends RecyclerView.ItemDecoration {
 
-	public DividersItemDecoration(Drawable dividerImage, int leftPaddingDp){
+	private final Drawable dividerImage_;
+	private final int leftPadding_;
+
+	/**
+	 * Class constructor
+	 *
+	 * @param dividerImage Drawable for divider
+	 * @param leftPadding  Left padding in dp
+	 */
+	public DividersItemDecoration(Drawable dividerImage, int leftPadding) {
 		dividerImage_ = dividerImage;
-		leftPadding_ = leftPaddingDp;
+		leftPadding_ = leftPadding;
 	}
 
+	/**
+	 * Draws a divider between items in the RecyclerView
+	 *
+	 * @param canvas Canvas to draw into
+	 * @param parent RecyclerView where this ItemDecoration is drawn into
+	 * @param state  The current state of RecyclerView.
+	 */
 	@Override
-	public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+	public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
 		if (dividerImage_ == null) {
-			super.onDrawOver(c, parent, state);
+			super.onDrawOver(canvas, parent, state);
 			return;
 		}
-		if (getOrientation(parent) == LinearLayoutManager.VERTICAL){
-			final int left = leftPadding_;
-			final int right = parent.getWidth() - parent.getPaddingRight();
-			final int childCount = parent.getChildCount();
+		//Picks up dimensions of canvas and draws canvas to child of RecyclerView depends on current
+		// orientation
+		if (getOrientation(parent) == LinearLayoutManager.VERTICAL) {
+			int left = leftPadding_;
+			int right = parent.getWidth() - parent.getPaddingRight();
+			int childCount = parent.getChildCount();
 
-			for (int i = 1; i < childCount; i++){
-				final View child = parent.getChildAt(i);
-				final RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams)child.getLayoutParams();
-				final int size = dividerImage_.getIntrinsicHeight();
-				final int top = child.getTop();
-				final int bottom = top + size;
+			for (int i = 1; i < childCount; i++) {
+				View child = parent.getChildAt(i);
+				int size = dividerImage_.getIntrinsicHeight();
+				int top = child.getTop();
+				int bottom = top + size;
 				dividerImage_.setBounds(left, top, right, bottom);
-				dividerImage_.draw(c);
+				dividerImage_.draw(canvas);
 			}
 		} else {
-			final int top = leftPadding_;
-			final int bottom = parent.getHeight() - parent.getPaddingBottom();
-			final int childCount = parent.getChildCount();
+			int top = leftPadding_;
+			int bottom = parent.getHeight() - parent.getPaddingBottom();
+			int childCount = parent.getChildCount();
 
-			for (int i=1; i < childCount; i++) {
-				final View child = parent.getChildAt(i);
-				final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-				final int size = dividerImage_.getIntrinsicWidth();
+			for (int i = 1; i < childCount; i++) {
+				View child = parent.getChildAt(i);
+				RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+				int size = dividerImage_.getIntrinsicWidth();
 				final int left = child.getLeft() - params.leftMargin;
 				final int right = left + size;
 				dividerImage_.setBounds(left, top, right, bottom);
-				dividerImage_.draw(c);
+				dividerImage_.draw(canvas);
 			}
 		}
 	}
 
-	@Override
-	public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-		super.getItemOffsets(outRect, view, parent, state);
-		if (dividerImage_ == null){
-			return;
-		}
-		if (parent.getChildPosition(view) < 1){
-			return;
-		}
-		if (getOrientation(parent) == LinearLayoutManager.VERTICAL){
-			outRect.top = dividerImage_.getIntrinsicHeight();
-		} else {
-			outRect.left = dividerImage_.getIntrinsicWidth();
-		}
-	}
-
+	/**
+	 * Checks if parent view uses LinearLayoutManager and returns orientation from it. Otherwise
+	 * IllegalStateException will be thrown
+	 *
+	 * @param parent The RecyclerView to decorate
+	 * @return Orientation from LinearLayoutManager
+	 */
 	private int getOrientation(RecyclerView parent) {
-		if (parent.getLayoutManager() instanceof LinearLayoutManager){
-			LinearLayoutManager layoutManager = (LinearLayoutManager)parent.getLayoutManager();
+		if (parent.getLayoutManager() instanceof LinearLayoutManager) {
+			LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
 			return layoutManager.getOrientation();
 		} else {
-			throw new IllegalStateException("DividersItemDecoration can only be used with a LinearLayoutManager.");
+			throw new IllegalStateException(parent.getContext().getString(
+					R.string.not_linear_layout_manager_exception));
 		}
 	}
 }

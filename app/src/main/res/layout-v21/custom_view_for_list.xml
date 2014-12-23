@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/height_recycler_view_tile"
-    android:orientation="horizontal"
-    android:padding="@dimen/padding_recycler_view_tile" >
+			  android:layout_width="match_parent"
+			  android:layout_height="@dimen/recycler_view_tile_height"
+			  android:orientation="horizontal"
+			  android:padding="@dimen/recycler_view_tile_padding">
+
 	<ImageView
-        android:id="@+id/imagePicture"
-		android:contentDescription="@string/image_description"
+		android:id="@+id/iconImageView"
+		android:layout_width="@dimen/recycler_view_item_icon_size"
+		android:layout_height="@dimen/recycler_view_item_icon_size"
 		android:layout_gravity="center"
-        android:layout_width="@dimen/size_icon_recycler_view_item"
-        android:layout_height="@dimen/size_icon_recycler_view_item"
-        android:padding="@dimen/padding_icon_recycler_view_item"
-		android:src="@android:drawable/btn_star_big_on"/>
-    <RelativeLayout
-		android:gravity="center_vertical"
+		android:contentDescription="@string/icon_description"
+		android:padding="@dimen/recycler_view_item_icon_padding"/>
+
+	<RelativeLayout
 		android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/padding_left_inner_layout_recycler_view_item"
-        android:paddingEnd="@dimen/padding_right_inner_layout_recycler_view_item" >
+		android:layout_height="match_parent"
+		android:gravity="center_vertical"
+		android:paddingEnd="@dimen/recycler_view_item_inner_layout_right_padding"
+		android:paddingStart="@dimen/recycler_view_item_inner_layout_left_padding">
+
 		<TextView
-            android:id="@+id/text_view_list_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/TextAppearance.Material.Subhead" />
-        <TextView
-            android:id="@+id/text_view_list_details"
-			android:layout_below="@+id/text_view_list_title"
+			android:id="@+id/title_text_view"
+			style="@android:style/TextAppearance.Material.Subhead"
 			android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/TextAppearance.Material.Body1" />
-    </RelativeLayout>
+			android:layout_height="wrap_content"/>
+
+		<TextView
+			android:id="@+id/details_text_view"
+			style="@android:style/TextAppearance.Material.Body1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/title_text_view"/>
+	</RelativeLayout>
 </LinearLayout>

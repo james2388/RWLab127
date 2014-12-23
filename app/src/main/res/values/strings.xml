@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RWLab127</string>
+	<string name="app_name">RWLab127</string>
 	<string name="font_family_sans_serif">sans-serif</string>
-	<string name="font_family_sans_serif_medium">sans-serif-medium</string>
-	<string name="image_description">personal image</string>
+	<string name="icon_description">personal image</string>
 	<string name="menu_title_switch_base">On/off base</string>
 	<string name="menu_title_switch_key">On/off key</string>
 	<string name="menu_title_switch_spacing">On/off spacing</string>
 	<string name="text_view_title">Title</string>
-    <string name="text_view_details">Details</string>
-    <string name="toast_text">Just some short message</string>
+	<string name="text_view_details">Details</string>
+	<string name="toast_text">Just some short message</string>
 	<string name="fab_description">FAB</string>
+	<string name="not_linear_layout_manager_exception">DividersItemDecoration can only be used with a LinearLayoutManager.</string>
 </resources>

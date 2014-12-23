@@ -30,9 +30,9 @@ import java.util.Random;
 public class MainActivity extends ActionBarActivity {
 
 	private static final String STATE_LIST = "ListView";
-	private List<CustomViewForList> customArray_;
+	private CustomRecyclerViewAdapter customRecyclerViewAdapter_;
+	private List<CustomViewForList> itemsList_;
 	private DesignSpecFrameLayout designSpecFrameLayout_;
-	CustomRecyclerViewAdapter customRecyclerViewAdapter_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +42,18 @@ public class MainActivity extends ActionBarActivity {
 
 		// Retain state
 		if (savedInstanceState != null) {
-			customArray_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
+			itemsList_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
 		} else {
-			customArray_ = new ArrayList<>();
+			itemsList_ = new ArrayList<>();
 			Random generator = new Random();
 			for (int i = 0; i < 5; i++) {
 				CustomViewForList customViewForList = new CustomViewForList(
 						this, randomString(5), randomString(15), generator.nextInt(4));
-				customArray_.add(customViewForList);
+				itemsList_.add(customViewForList);
 			}
 		}
 
-		//Set up Recycler View
+		//Set up RecyclerView
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(linearLayoutManager);
@@ -61,10 +61,10 @@ public class MainActivity extends ActionBarActivity {
 
 		//Set up item touch listener
 		recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-			private float initialX_;
-			private float initialY_;
-			private float summX_;
-			private float summY_;
+			private float initialX_;							// First touch coordinates
+			private float initialY_;							// First touch coordinates
+			private float summX_;								// Movement along X axis
+			private float summY_;								// Movement along Y axis
 			private float tempX_;
 			private float tempY_;
 
@@ -74,32 +74,35 @@ public class MainActivity extends ActionBarActivity {
 			 * {@link #deleteItem(android.support.v7.widget.RecyclerView)} to delete first touched
 			 * item.
 			 * @param rv Recycler View object
-			 * @param e motion event
-			 * @return false to handle motion event to super. True to handle motion event
+			 * @param event Motion event
+			 * @return False to handle motion event to super. True to handle motion event
 			 * to onTouchEvent
 			 */
 			@Override
-			public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-				int action = e.getActionMasked();
-				if (action == MotionEvent.ACTION_DOWN){
+			public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent event) {
+				int action = event.getActionMasked();
+				if (action == MotionEvent.ACTION_DOWN) {
 					// Save coordinates of touch
-					initialX_ = e.getX();
-					initialY_ = e.getY();
+					initialX_ = event.getX();
+					initialY_ = event.getY();
+					// Set initial values
 					summX_ = 0;
 					summY_ = 0;
-					tempX_ = e.getX();
-					tempY_ = e.getY();
+					tempX_ = event.getX();
+					tempY_ = event.getY();
 					return false;
-				} else if (action == MotionEvent.ACTION_MOVE){
-					// Counts overall movement while touch continues
-					summX_ = summX_ + e.getX() - tempX_;
-					summY_ = summY_ + e.getY() - tempY_;
-					tempX_ = e.getX();
-					tempY_ = e.getY();
+				} else if (action == MotionEvent.ACTION_MOVE) {
+					// Counts overall movement while touch continues based on previous step
+					// coordinates
+					summX_ = summX_ + event.getX() - tempX_;
+					summY_ = summY_ + event.getY() - tempY_;
+					//Saves last coordinates
+					tempX_ = event.getX();
+					tempY_ = event.getY();
 					return false;
-				} else if (action == MotionEvent.ACTION_UP){
+				} else if (action == MotionEvent.ACTION_UP) {
 					// Delete item if swiped to the right
-					if (summX_ > 0 && summX_ > Math.abs(summY_)){
+					if (summX_ > 0 && summX_ > Math.abs(summY_)) {
 						deleteItem(rv);
 					}
 					return false;
@@ -110,17 +113,21 @@ public class MainActivity extends ActionBarActivity {
 
 			/**
 			 * Deletes item from RecyclerView and notifies RecycleViewAdapter
-			 * @param rv Recycler View object
+			 * @param rv RecyclerView object
 			 */
 			private void deleteItem(RecyclerView rv) {
 				View itemView = rv.findChildViewUnder(initialX_, initialY_);
 				if (itemView != null) {
 					int position = rv.getChildPosition(itemView);
-					if (position == customArray_.size()){
-						position = customArray_.size() - 1;
+					// Check if animation of items deleting were in progress while user swiped to
+					// delete last item in the list. Needed to ensure correct item deleting and
+					// avoid ArrayIndexOutOfBoundsException
+					if (position == itemsList_.size()) {
+						position = itemsList_.size() - 1;
 					}
+
 					customRecyclerViewAdapter_.notifyItemRemoved(position);
-					customArray_.remove(position);
+					itemsList_.remove(position);
 				}
 			}
 
@@ -129,34 +136,35 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
-		// Specify an adapter
-		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(customArray_);
+		// Specify and set up an adapter
+		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_);
 		recyclerView.setAdapter(customRecyclerViewAdapter_);
 		recyclerView.addItemDecoration(
 				new DividersItemDecoration(getResources().getDrawable(R.drawable.divider),
-						(int)getResources().getDimension(R.dimen.divider_padding_left))
+						(int) getResources().getDimension(R.dimen.divider_padding_left))
 		);
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		// Put array with items in out state bundle
-		outState.putSerializable(STATE_LIST, (java.io.Serializable) customArray_);
+		// Puts array with items in out state bundle
+		outState.putSerializable(STATE_LIST, (java.io.Serializable) itemsList_);
 		super.onSaveInstanceState(outState);
 	}
 
 	/**
 	 * Generates random string
+	 *
 	 * @param length Length of the string
 	 * @return Generated string
 	 */
 	private String randomString(int length) {
 		Random generator = new Random();
 		StringBuilder randomStringBuilder = new StringBuilder();
-		char temp;
+		char tempChar;
 		for (int i = 0; i < length; i++) {
-			temp = (char) (generator.nextInt(96) + 32);
-			randomStringBuilder.append(temp);
+			tempChar = (char) (generator.nextInt(96) + 32);
+			randomStringBuilder.append(tempChar);
 		}
 		return randomStringBuilder.toString();
 	}
@@ -174,13 +182,13 @@ public class MainActivity extends ActionBarActivity {
 		// Switch DesignSpec view elements visibility
 		DesignSpec designSpec = designSpecFrameLayout_.getDesignSpec();
 		switch (item.getItemId()) {
-			case R.id.action_switch_baseline:
+			case R.id.baseline_switch_action:
 				designSpec.setBaselineGridVisible(!designSpec.isBaselineGridVisible());
 				break;
-			case R.id.action_switch_spacing:
+			case R.id.spacing_switch_action:
 				designSpec.setSpacingsVisible(!designSpec.areSpacingsVisible());
 				break;
-			case R.id.action_switch_keyline:
+			case R.id.keyline_switch_action:
 				designSpec.setKeylinesVisible(!designSpec.areKeylinesVisible());
 				break;
 		}
@@ -188,33 +196,36 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	/**
-	 * Implemented method similar to onClick but from {@link com.ruswizards.rwlab127.CustomViewForList}
-	 * class
+	 * Just shows a toast. It is an implemented method similar to onClick but from
+	 * {@link com.ruswizards.rwlab127.CustomViewForList} class
+	 *
 	 * @param v View
 	 */
 	public void onSpecialClick(View v) {
 		Toast.makeText(this, getString(R.string.toast_text), Toast.LENGTH_SHORT).show();
 	}
 
-	public void onClick(View v){
-		switch (v.getId()){
-			// Add element into RecycleView if floating button was pressed
-			case R.id.fab_button:
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.floating_action_button:
+				// Add element into RecycleView if floating button was pressed
 				RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-				recyclerView.getLayoutManager().scrollToPosition(0);
-				addRandomItem(0);
-				customRecyclerViewAdapter_.notifyItemInserted(0);
+				int position = 0;
+				recyclerView.getLayoutManager().scrollToPosition(position);
+				addRandomItem(position);
+				customRecyclerViewAdapter_.notifyItemInserted(position);
 				break;
 		}
 	}
 
 	/**
 	 * Adds random item to list
+	 *
 	 * @param position Position of inserting
 	 */
 	private void addRandomItem(int position) {
 		CustomViewForList customViewForList = new CustomViewForList(
 				this, randomString(5), randomString(15), new Random().nextInt(4));
-		customArray_.add(position, customViewForList);
+		itemsList_.add(position, customViewForList);
 	}
 }

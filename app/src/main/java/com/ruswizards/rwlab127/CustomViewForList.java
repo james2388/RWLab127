@@ -22,7 +22,7 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 
 	private String title_;
 	private String details_;
-	private int imageViewResource_;
+	private int iconResource_;
 
 	public CustomViewForList(Context context) {
 		this(context, null);
@@ -44,42 +44,43 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 
 	/**
 	 * Calls {@link #CustomViewForList(android.content.Context, android.util.AttributeSet)}, saves
-	 * {@link #title_}, {@link #details_}, {@link #imageViewResource_} values and fills views in
+	 * {@link #title_}, {@link #details_}, {@link #iconResource_} values and fills views in
 	 * a view holder
 	 */
-	public CustomViewForList(Context context, String title, String details, int imageNum) {
+	public CustomViewForList(Context context, String title, String details, int imageNumber) {
 		this(context, null);
 		title_ = title;
-		TextView textViewTitle = (TextView) findViewById(R.id.text_view_list_title);
-		textViewTitle.setText(title);
+		TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
+		titleTextView.setText(title);
 
 		details_ = details;
-		TextView textViewDetails = (TextView) findViewById(R.id.text_view_list_details);
-		textViewDetails.setText(details);
+		TextView detailsTextView = (TextView) findViewById(R.id.details_text_view);
+		detailsTextView.setText(details);
 
-		ImageView imageView = (ImageView) findViewById(R.id.imagePicture);
-		switch (imageNum) {
+		ImageView iconImageView = (ImageView) findViewById(R.id.iconImageView);
+		switch (imageNumber) {
 			case 0:
-				imageViewResource_ = android.R.drawable.btn_star_big_on;
+				iconResource_ = android.R.drawable.btn_star_big_on;
 				break;
 			case 1:
-				imageViewResource_ = R.drawable.bg_images_sprite;
+				iconResource_ = R.drawable.bg_images_sprite;
 				break;
 			case 2:
-				imageViewResource_ = R.drawable.android_wrench;
+				iconResource_ = R.drawable.android_wrench;
 				break;
 			case 3:
-				imageViewResource_ = android.R.drawable.ic_dialog_alert;
+				iconResource_ = android.R.drawable.ic_dialog_alert;
 				break;
 			default:
-				imageViewResource_ = android.R.drawable.btn_star_big_on;
+				iconResource_ = android.R.drawable.btn_star_big_on;
 				break;
 		}
-		imageView.setImageResource(imageViewResource_);
+		iconImageView.setImageResource(iconResource_);
 	}
 
 	/**
-	 * Gets a title field
+	 * Gets a title field content
+	 *
 	 * @return Title
 	 */
 	public String getTitle() {
@@ -87,7 +88,8 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 	}
 
 	/**
-	 * Gets a details field
+	 * Gets a details field content
+	 *
 	 * @return Details
 	 */
 	public String getDetails() {
@@ -95,10 +97,11 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 	}
 
 	/**
-	 * Gets an image's resource number
-	 * @return Image's resource number
+	 * Gets an icon's drawable resource
+	 *
+	 * @return Icon's drawable resource
 	 */
 	public int getImageResource() {
-		return imageViewResource_;
+		return iconResource_;
 	}
 }

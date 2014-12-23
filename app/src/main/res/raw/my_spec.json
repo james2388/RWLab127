@@ -12,18 +12,23 @@
         { "offset": 72,
           "from": "TOP" },
         { "offset": 144,
-          "from": "TOP" }
+          "from": "TOP" },
+		{ "offset": 16,
+		  "from": "BOTTOM" }
     ],
     "spacingsVisible": false,
     "spacings": [
-        { "offset": 0,
-          "size": 16,
-          "from": "LEFT" },
-        { "offset": 56,
-          "size": 16,
-          "from": "LEFT" },
-        { "offset": 0,
-          "size": 16,
-          "from": "RIGHT" }
-    ]
+            { "offset": 0,
+              "size": 16,
+              "from": "LEFT" },
+            { "offset": 56,
+              "size": 16,
+              "from": "LEFT" },
+            { "offset": 0,
+              "size": -16,
+              "from": "RIGHT" },
+		    { "offset": 0,
+			  "size": -16,
+			  "from": "BOTTOM" }
+	]
 }

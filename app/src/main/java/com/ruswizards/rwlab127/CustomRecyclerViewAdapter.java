@@ -21,24 +21,7 @@ import java.util.List;
 public class CustomRecyclerViewAdapter extends
 		RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
 
-	private List<CustomViewForList> listItems_;
-
-	/**
-	 * ViewHolder class.
-	 */
-	public static class ViewHolder extends RecyclerView.ViewHolder {
-
-		public TextView textViewTitle;
-		public TextView textViewDetails;
-		public ImageView imageViewIcon;
-
-		public ViewHolder(View itemView) {
-			super(itemView);
-			textViewTitle = (TextView) itemView.findViewById(R.id.text_view_list_title);
-			textViewDetails = (TextView) itemView.findViewById(R.id.text_view_list_details);
-			imageViewIcon = (ImageView) itemView.findViewById(R.id.imagePicture);
-		}
-	}
+	private final List<CustomViewForList> listItems_;
 
 	public CustomRecyclerViewAdapter(List<CustomViewForList> listItems) {
 		listItems_ = listItems;
@@ -49,30 +32,46 @@ public class CustomRecyclerViewAdapter extends
 	 */
 	@Override
 	public CustomRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-		View v = LayoutInflater.from(viewGroup.getContext())
+		View itemView = LayoutInflater.from(viewGroup.getContext())
 				.inflate(R.layout.custom_view_for_list, viewGroup, false);
-		ViewHolder viewHolder = new ViewHolder(v);
-		return viewHolder;
+		return new ViewHolder(itemView);
 	}
 
 	/**
 	 * Fills in views in a view holder on bind
-	 * @param viewHolder
-	 * @param i item number
+	 *
+	 * @param i Item number
 	 */
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, int i) {
 		CustomViewForList item = listItems_.get(i);
-		viewHolder.textViewTitle.setText(item.getTitle());
-		viewHolder.textViewDetails.setText(item.getDetails());
-		viewHolder.imageViewIcon.setImageResource(item.getImageResource());
+		viewHolder.titleTextView.setText(item.getTitle());
+		viewHolder.detailsTextView.setText(item.getDetails());
+		viewHolder.iconImageView.setImageResource(item.getImageResource());
 	}
 
 	/**
-	 * Counts elements
+	 * Counts elements in a list
 	 */
 	@Override
 	public int getItemCount() {
 		return listItems_.size();
+	}
+
+	/**
+	 * ViewHolder class.
+	 */
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+
+		public final TextView titleTextView;
+		public final TextView detailsTextView;
+		public final ImageView iconImageView;
+
+		public ViewHolder(View itemView) {
+			super(itemView);
+			titleTextView = (TextView) itemView.findViewById(R.id.title_text_view);
+			detailsTextView = (TextView) itemView.findViewById(R.id.details_text_view);
+			iconImageView = (ImageView) itemView.findViewById(R.id.iconImageView);
+		}
 	}
 }

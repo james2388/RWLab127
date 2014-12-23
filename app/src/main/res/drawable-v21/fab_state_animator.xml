@@ -2,18 +2,18 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:state_pressed="true">
 		<set>
-			<objectAnimator android:propertyName="translationZ"
-							android:duration="@android:integer/config_shortAnimTime"
-							android:valueTo="@dimen/value_to_elevation_fab_pressed"
+			<objectAnimator android:duration="@android:integer/config_shortAnimTime"
+							android:propertyName="translationZ"
+							android:valueTo="@dimen/fab_pressed_animation_value_to"
 							android:valueType="floatType"/>
 		</set>
 	</item>
-	<item android:state_pressed="false" >
+	<item android:state_pressed="false">
 		<set>
-			<objectAnimator android:propertyName="translationZ"
-							android:duration="@android:integer/config_longAnimTime"
-							android:valueTo="@dimen/value_to_elevation_fab_not_pressed"
+			<objectAnimator android:duration="@android:integer/config_longAnimTime"
+							android:propertyName="translationZ"
+							android:valueTo="@dimen/fab_not_pressed_animation_value_to"
 							android:valueType="floatType"/>
 		</set>
-    </item>
+	</item>
 </selector>
