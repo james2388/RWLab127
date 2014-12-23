@@ -41,7 +41,6 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 		layoutInflater.inflate(R.layout.custom_view_for_list, this);
 	}
 
-
 	/**
 	 * Calls {@link #CustomViewForList(android.content.Context, android.util.AttributeSet)}, saves
 	 * {@link #title_}, {@link #details_}, {@link #iconResource_} values and fills views in

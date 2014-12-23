@@ -39,7 +39,6 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		designSpecFrameLayout_ = (DesignSpecFrameLayout) findViewById(R.id.design_spec_layout);
-
 		// Retain state
 		if (savedInstanceState != null) {
 			itemsList_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
@@ -52,13 +51,11 @@ public class MainActivity extends ActionBarActivity {
 				itemsList_.add(customViewForList);
 			}
 		}
-
 		//Set up RecyclerView
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(linearLayoutManager);
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
-
 		//Set up item touch listener
 		recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
 			private float initialX_;							// First touch coordinates
