@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
-		<shape android:shape="oval">
-			<size
-				android:width="@dimen/fab_size"
-				android:height="@dimen/fab_size"/>
-			<solid android:color="@color/accent"/>
-		</shape>
+		<ripple
+			android:color="@color/accentDark"
+			xmlns:android="http://schemas.android.com/apk/res/android">
+			<item>
+				<shape android:shape="oval">
+					<size
+						android:width="@dimen/fab_size"
+						android:height="@dimen/fab_size"/>
+					<solid android:color="@color/accent"/>
+				</shape>
+			</item>
+		</ripple>
 	</item>
 	<item
 		android:left="@dimen/fab_plus_symbol_padding"
@@ -31,3 +37,6 @@
 		</rotate>
 	</item>
 </layer-list>
+
+
+
