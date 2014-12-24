@@ -1,59 +1,11 @@
-<org.lucasr.dspec.DesignSpecFrameLayout
-	android:id="@+id/design_spec_layout"
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	app:designSpec="@raw/my_spec">
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		tools:context=".MainActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-		<com.ruswizards.rwlab127.SpecialLinearLayout
-			android:id="@+id/special_layout"
-			android:layout_width="match_parent"
-			android:layout_height="@dimen/upper_tile_height"
-			android:background="@drawable/rw_item_background"
-			android:gravity="center_vertical"
-			android:orientation="vertical"
-			android:paddingLeft="@dimen/upper_tile_left_padding"
-			app:onSpecialClick="onSpecialClick">
-			<TextView
-				android:id="@+id/title_text_view"
-				style="@style/HeaderTextTitle"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/text_view_title"/>
-			<TextView
-				android:id="@+id/details_text_view"
-				style="@style/TextDetails"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/text_view_details"/>
-		</com.ruswizards.rwlab127.SpecialLinearLayout>
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-		<android.support.v7.widget.RecyclerView
-			android:id="@+id/recycler_view"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_below="@+id/special_layout"
-			android:scrollbars="vertical">
-		</android.support.v7.widget.RecyclerView>
-
-		<ImageButton
-			android:id="@+id/floating_action_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentRight="true"
-			android:layout_marginBottom="@dimen/fab_margin"
-			android:layout_marginEnd="@dimen/fab_margin"
-			android:layout_marginRight="@dimen/fab_margin"
-			android:background="@drawable/fab_shape"
-			android:contentDescription="@string/fab_description"
-			android:onClick="onClick"/>
-	</RelativeLayout>
-</org.lucasr.dspec.DesignSpecFrameLayout>
+</RelativeLayout>
