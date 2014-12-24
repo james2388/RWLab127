@@ -20,7 +20,7 @@
 					<size
 						android:width="@dimen/fab_size"
 						android:height="@dimen/fab_size"/>
-					<solid android:color="@color/accent"/>
+					<solid android:color="@color/accentDark"/>
 				</shape>
 			</item>
 			<item

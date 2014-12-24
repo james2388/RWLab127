@@ -49,6 +49,5 @@
 		android:background="@drawable/fab_shape"
 		android:contentDescription="@string/fab_description"
 		android:elevation="@dimen/fab_elevation"
-		android:onClick="onClick"
-		android:stateListAnimator="@drawable/fab_state_animator"/>
+		android:onClick="onClick" />
 </RelativeLayout>
