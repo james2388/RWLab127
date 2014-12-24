@@ -58,82 +58,7 @@ public class MainActivity extends ActionBarActivity {
 		recyclerView.setLayoutManager(linearLayoutManager);
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
 		//Set up item touch listener
-		recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-			private float initialX_;							// First touch coordinates
-			private float initialY_;							// First touch coordinates
-			private float summX_;								// Movement along X axis
-			private float summY_;								// Movement along Y axis
-			private float tempX_;
-			private float tempY_;
-
-			/**
-			 * Monitors touches inside Recycler View. If got an action up motion event, checks if
-			 * previously was swiping right gesture. After detecting right swipe gesture calls
-			 * {@link #deleteItem(android.support.v7.widget.RecyclerView)} to delete first touched
-			 * item.
-			 * @param rv Recycler View object
-			 * @param event Motion event
-			 * @return False to handle motion event to super. True to handle motion event
-			 * to onTouchEvent
-			 */
-			@Override
-			public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent event) {
-				int action = event.getActionMasked();
-				if (action == MotionEvent.ACTION_DOWN) {
-					// Save coordinates of touch
-					initialX_ = event.getX();
-					initialY_ = event.getY();
-					// Set initial values
-					summX_ = 0;
-					summY_ = 0;
-					tempX_ = event.getX();
-					tempY_ = event.getY();
-					return false;
-				} else if (action == MotionEvent.ACTION_MOVE) {
-					// Counts overall movement while touch continues based on previous step
-					// coordinates
-					summX_ = summX_ + event.getX() - tempX_;
-					summY_ = summY_ + event.getY() - tempY_;
-					//Saves last coordinates
-					tempX_ = event.getX();
-					tempY_ = event.getY();
-					return false;
-				} else if (action == MotionEvent.ACTION_UP) {
-					// Delete item if swiped to the right
-					if (summX_ > 0 && summX_ > Math.abs(summY_)) {
-						deleteItem(rv);
-					}
-					return false;
-				} else {
-					return false;
-				}
-			}
-
-			/**
-			 * Deletes item from RecyclerView and notifies RecycleViewAdapter
-			 * @param rv RecyclerView object
-			 */
-			private void deleteItem(RecyclerView rv) {
-				View itemView = rv.findChildViewUnder(initialX_, initialY_);
-				if (itemView != null) {
-					int position = rv.getChildPosition(itemView);
-					// Check if animation of items deleting were in progress while user swiped to
-					// delete last item in the list. Needed to ensure correct item deleting and
-					// avoid ArrayIndexOutOfBoundsException
-					if (position == itemsList_.size()) {
-						position = itemsList_.size() - 1;
-					}
-
-					customRecyclerViewAdapter_.notifyItemRemoved(position);
-					itemsList_.remove(position);
-				}
-			}
-
-			@Override
-			public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-			}
-		});
-
+		recyclerView.addOnItemTouchListener(new TouchListener(this));
 		// Specify and set up an adapter
 		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_);
 		recyclerView.setAdapter(customRecyclerViewAdapter_);
@@ -224,5 +149,27 @@ public class MainActivity extends ActionBarActivity {
 		CustomViewForList customViewForList = new CustomViewForList(
 				this, randomString(5), randomString(15), new Random().nextInt(4));
 		itemsList_.add(position, customViewForList);
+	}
+
+	/**
+	 * Deletes item from RecyclerView and notifies RecycleViewAdapter
+	 * @param rv RecyclerView object
+	 * @param initialX Axis X coordinate of first touch
+	 * @param initialY Axis Y coordinate of first touch
+	 */
+	public void deleteItem(RecyclerView rv, float initialX, float initialY) {
+		View itemView = rv.findChildViewUnder(initialX, initialY);
+		if (itemView != null) {
+			int position = rv.getChildPosition(itemView);
+			// Check if animation of items deleting were in progress while user swiped to
+			// delete last item in the list. Needed to ensure correct item deleting and
+			// avoid ArrayIndexOutOfBoundsException
+			if (position == itemsList_.size()) {
+				position = itemsList_.size() - 1;
+			}
+
+			customRecyclerViewAdapter_.notifyItemRemoved(position);
+			itemsList_.remove(position);
+		}
 	}
 }
