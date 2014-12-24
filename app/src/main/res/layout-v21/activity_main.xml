@@ -15,20 +15,21 @@
 			android:id="@+id/special_layout"
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/upper_tile_height"
-			android:background="@drawable/rw_item_background"
+			android:background="@drawable/ripple"
+			android:elevation="@dimen/upper_tile_elevation"
 			android:gravity="center_vertical"
 			android:orientation="vertical"
-			android:paddingLeft="@dimen/upper_tile_left_padding"
+			android:paddingStart="@dimen/upper_tile_left_padding"
 			app:onSpecialClick="onSpecialClick">
 			<TextView
 				android:id="@+id/title_text_view"
-				style="@style/HeaderTextTitle"
+				style="@android:style/TextAppearance.Material.Title"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/text_view_title"/>
 			<TextView
 				android:id="@+id/details_text_view"
-				style="@style/TextDetails"
+				style="@android:style/TextAppearance.Material.Body1"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/text_view_details"/>
@@ -48,12 +49,12 @@
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentEnd="true"
-			android:layout_alignParentRight="true"
 			android:layout_marginBottom="@dimen/fab_margin"
 			android:layout_marginEnd="@dimen/fab_margin"
-			android:layout_marginRight="@dimen/fab_margin"
 			android:background="@drawable/fab_shape"
 			android:contentDescription="@string/fab_description"
-			android:onClick="onClick"/>
+			android:elevation="@dimen/fab_elevation"
+			android:onClick="onClick"
+			android:stateListAnimator="@drawable/fab_state_animator"/>
 	</RelativeLayout>
 </org.lucasr.dspec.DesignSpecFrameLayout>
