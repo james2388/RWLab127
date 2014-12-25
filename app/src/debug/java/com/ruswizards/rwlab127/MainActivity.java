@@ -118,14 +118,18 @@ public class MainActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 			case R.id.baseline_switch_action:
 				designSpec.setBaselineGridVisible(!designSpec.isBaselineGridVisible());
+				item.setChecked(!item.isChecked());
 				break;
 			case R.id.spacing_switch_action:
 				designSpec.setSpacingsVisible(!designSpec.areSpacingsVisible());
+				item.setChecked(!item.isChecked());
 				break;
 			case R.id.keyline_switch_action:
 				designSpec.setKeylinesVisible(!designSpec.areKeylinesVisible());
+				item.setChecked(!item.isChecked());
 				break;
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
 

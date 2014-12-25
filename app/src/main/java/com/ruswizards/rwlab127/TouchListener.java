@@ -98,7 +98,7 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 					frontLayoutChildView_.setAlpha(1 - deltaX / childWidth);
 				}
 				break;
-			
+
 			case MotionEvent.ACTION_UP:
 				if (childView_ == null) {
 					break;
