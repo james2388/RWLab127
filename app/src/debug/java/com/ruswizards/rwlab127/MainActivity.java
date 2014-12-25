@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -31,9 +30,11 @@ import java.util.Random;
 public class MainActivity extends ActionBarActivity {
 
 	private static final String STATE_LIST = "ListView";
+	private static final String LOG_TAG = "MainActivity";
 	private CustomRecyclerViewAdapter customRecyclerViewAdapter_;
 	private List<CustomViewForList> itemsList_;
 	private DesignSpecFrameLayout designSpecFrameLayout_;
+	private TouchListener touchListenerRecycler_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,8 @@ public class MainActivity extends ActionBarActivity {
 		recyclerView.setLayoutManager(linearLayoutManager);
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
 		//Set up item touch listener
-		recyclerView.addOnItemTouchListener(new TouchListener(this));
+		touchListenerRecycler_ = new TouchListener(this);
+		recyclerView.addOnItemTouchListener(touchListenerRecycler_);
 		// Specify and set up an adapter
 		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_);
 		recyclerView.setAdapter(customRecyclerViewAdapter_);
@@ -73,6 +75,16 @@ public class MainActivity extends ActionBarActivity {
 		// Puts array with items in out state bundle
 		outState.putSerializable(STATE_LIST, (java.io.Serializable) itemsList_);
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		boolean result = super.dispatchTouchEvent(ev);
+		// Check if items of RecyclerView should be deleted if touch is outside RecyclerView
+		if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
+			touchListenerRecycler_.checkForDeletion();
+		}
+		return result;
 	}
 
 	/**
@@ -153,23 +165,17 @@ public class MainActivity extends ActionBarActivity {
 
 	/**
 	 * Deletes item from RecyclerView and notifies RecycleViewAdapter
-	 * @param rv RecyclerView object
-	 * @param initialX Axis X coordinate of first touch
-	 * @param initialY Axis Y coordinate of first touch
+	 *
+	 * @param position Item position in RecyclerView
 	 */
-	public void deleteItem(RecyclerView rv, float initialX, float initialY) {
-		View itemView = rv.findChildViewUnder(initialX, initialY);
-		if (itemView != null) {
-			int position = rv.getChildPosition(itemView);
-			// Check if animation of items deleting were in progress while user swiped to
-			// delete last item in the list. Needed to ensure correct item deleting and
-			// avoid ArrayIndexOutOfBoundsException
-			if (position == itemsList_.size()) {
-				position = itemsList_.size() - 1;
-			}
-
-			customRecyclerViewAdapter_.notifyItemRemoved(position);
-			itemsList_.remove(position);
+	public void deleteItem(int position) {
+		// Check if animation of items deleting were in progress while user swiped to
+		// delete last item in the list. Needed to ensure correct item deleting and
+		// avoid ArrayIndexOutOfBoundsException
+		if (position == itemsList_.size()) {
+			position = itemsList_.size() - 1;
 		}
+		itemsList_.remove(position);
+		customRecyclerViewAdapter_.notifyItemRemoved(position);
 	}
 }

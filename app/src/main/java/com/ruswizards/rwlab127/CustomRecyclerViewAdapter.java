@@ -45,6 +45,9 @@ public class CustomRecyclerViewAdapter extends
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, int i) {
 		CustomViewForList item = listItems_.get(i);
+		View frontView = viewHolder.itemView.findViewById(R.id.front_layout);
+		frontView.setTranslationX(0);
+		frontView.setAlpha(1);
 		viewHolder.titleTextView.setText(item.getTitle());
 		viewHolder.detailsTextView.setText(item.getDetails());
 		viewHolder.iconImageView.setImageResource(item.getImageResource());

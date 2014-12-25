@@ -23,4 +23,7 @@
 	<dimen name="upper_tile_elevation">2dp</dimen>
 	<dimen name="upper_tile_height">72dp</dimen>
 	<dimen name="upper_tile_left_padding">72dp</dimen>
+	<dimen name="recycler_view_tile_padding_right">16dp</dimen>
+	<dimen name="recycler_view_tile_padding_left">12dp</dimen>
+	<dimen name="recycler_view_tile_vertical_padding">20dp</dimen>
 </resources>
