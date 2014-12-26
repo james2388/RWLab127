@@ -12,4 +12,5 @@
 	<string name="fab_description">FAB</string>
 	<string name="not_linear_layout_manager_exception">DividersItemDecoration can only be used with a LinearLayoutManager.</string>
 	<string name="undo_text_view">Undo</string>
+	<string name="menu_title_search">search</string>
 </resources>

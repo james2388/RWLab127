@@ -6,15 +6,20 @@
  */
 package com.ruswizards.rwlab127;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.lucasr.dspec.DesignSpec;
@@ -35,6 +40,10 @@ public class MainActivity extends ActionBarActivity {
 	private List<CustomViewForList> itemsList_;
 	private DesignSpecFrameLayout designSpecFrameLayout_;
 	private TouchListener touchListenerRecycler_;
+	private MenuItem searchAction_;
+	private boolean isSearchOpened_;
+	private RecyclerView recyclerView_;
+	private List<CustomViewForList> tempList_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,25 +55,27 @@ public class MainActivity extends ActionBarActivity {
 			itemsList_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
 		} else {
 			itemsList_ = new ArrayList<>();
-			Random generator = new Random();
+			tempList_ = new ArrayList<>();
+//			Random generator = new Random();
 			for (int i = 0; i < 5; i++) {
-				CustomViewForList customViewForList = new CustomViewForList(
-						this, randomString(5), randomString(15), generator.nextInt(4));
-				itemsList_.add(customViewForList);
+				addRandomItem(i);
+				/*CustomViewForList customViewForList = new CustomViewForList(
+						this, randomString(3), randomString(5), generator.nextInt(4));
+				itemsList_.add(customViewForList);*/
 			}
 		}
 		//Set up RecyclerView
-		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+		recyclerView_ = (RecyclerView) findViewById(R.id.recycler_view);
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-		recyclerView.setLayoutManager(linearLayoutManager);
-		recyclerView.setItemAnimator(new DefaultItemAnimator());
+		recyclerView_.setLayoutManager(linearLayoutManager);
+		recyclerView_.setItemAnimator(new DefaultItemAnimator());
 		//Set up item touch listener
 		touchListenerRecycler_ = new TouchListener(this);
-		recyclerView.addOnItemTouchListener(touchListenerRecycler_);
+		recyclerView_.addOnItemTouchListener(touchListenerRecycler_);
 		// Specify and set up an adapter
-		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_);
-		recyclerView.setAdapter(customRecyclerViewAdapter_);
-		recyclerView.addItemDecoration(
+		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_, this);
+		recyclerView_.setAdapter(customRecyclerViewAdapter_);
+		recyclerView_.addItemDecoration(
 				new DividersItemDecoration(getResources().getDrawable(R.drawable.divider),
 						(int) getResources().getDimension(R.dimen.divider_padding_left))
 		);
@@ -112,6 +123,12 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		searchAction_ = menu.findItem(R.id.search_action);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Switch DesignSpec view elements visibility
 		DesignSpec designSpec = designSpecFrameLayout_.getDesignSpec();
@@ -128,9 +145,53 @@ public class MainActivity extends ActionBarActivity {
 				designSpec.setKeylinesVisible(!designSpec.areKeylinesVisible());
 				item.setChecked(!item.isChecked());
 				break;
+			case R.id.search_action:
+				if (isSearchOpened_){
+					closeSearch();
+					changeItems(tempList_);
+				} else {
+					openSearch();
+					tempList_.clear();
+					tempList_.addAll(itemsList_);
+				}
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void closeSearch() {
+		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayShowCustomEnabled(false);
+		actionBar.setCustomView(R.layout.search_bar);
+
+		searchAction_.setIcon(getResources().getDrawable(R.drawable.abc_ic_search_api_mtrl_alpha));
+
+		isSearchOpened_ = false;
+	}
+
+	private void openSearch() {
+		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setCustomView(R.layout.search_bar);
+
+		final EditText searchEditText = (EditText)actionBar.getCustomView().findViewById(R.id.search_edit_text);
+		searchEditText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				customRecyclerViewAdapter_.getFilter().filter(searchEditText.getText());
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+
+		searchAction_.setIcon(getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha));
+		isSearchOpened_ = true;
 	}
 
 	/**
@@ -163,7 +224,7 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void addRandomItem(int position) {
 		CustomViewForList customViewForList = new CustomViewForList(
-				this, randomString(5), randomString(15), new Random().nextInt(4));
+				this, randomString(3), randomString(5), (int) new Random().nextInt(1000)/250);
 		itemsList_.add(position, customViewForList);
 	}
 
@@ -181,5 +242,39 @@ public class MainActivity extends ActionBarActivity {
 		}
 		itemsList_.remove(position);
 		customRecyclerViewAdapter_.notifyItemRemoved(position);
+	}
+
+	public void changeItems(List<CustomViewForList> newItems) {
+
+		itemsList_.clear();
+		itemsList_.addAll(newItems);
+
+		customRecyclerViewAdapter_.notifyDataSetChanged();
+
+
+		/*customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_, this);
+		customRecyclerViewAdapter_.notifyDataSetChanged();
+		int n = 0;
+		for (int i = 0; i < newItems.size(); i++) {
+			Log.d(LOG_TAG, "i: " + String.valueOf(i));
+			Log.d(LOG_TAG, "n: " + String.valueOf(i));
+			CustomViewForList initialItem = itemsList_.get(n);
+			CustomViewForList newItem = newItems.get(i);
+
+			while (!(initialItem.getTitle().equals(newItem.getTitle())
+					&& initialItem.getDetails().equals(newItem.getDetails())) && n < itemsList_.size()){
+				customRecyclerViewAdapter_.notifyItemRemoved(n);
+				n++;
+			}
+
+
+			*//*if (!(initialItem.getTitle().equals(newItem.getTitle())
+					&& initialItem.getDetails().equals(newItem.getDetails()))){
+				customRecyclerViewAdapter_.notifyItemRemoved(n);
+			} else {
+				n++;
+			}*//*
+		}*/
+
 	}
 }

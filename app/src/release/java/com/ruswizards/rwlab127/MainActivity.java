@@ -126,7 +126,7 @@ public class MainActivity extends ActionBarActivity {
 		});
 
 		// Specify and set up an adapter
-		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_);
+		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_, this);
 		recyclerView.setAdapter(customRecyclerViewAdapter_);
 		recyclerView.addItemDecoration(
 				new DividersItemDecoration(getResources().getDrawable(R.drawable.divider),

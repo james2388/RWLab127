@@ -6,10 +6,13 @@
  */
 package com.ruswizards.rwlab127;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,12 +22,15 @@ import java.util.List;
  * Custom adapter based on RecyclerView.Adapter
  */
 public class CustomRecyclerViewAdapter extends
-		RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
+		RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> implements Filterable {
 
 	private final List<CustomViewForList> listItems_;
+	private RecyclerFilter filter_;
+	private MainActivity activity_;
 
-	public CustomRecyclerViewAdapter(List<CustomViewForList> listItems) {
+	public CustomRecyclerViewAdapter(List<CustomViewForList> listItems, MainActivity activity) {
 		listItems_ = listItems;
+		activity_ = activity;
 	}
 
 	/**
@@ -44,10 +50,12 @@ public class CustomRecyclerViewAdapter extends
 	 */
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, int i) {
-		CustomViewForList item = listItems_.get(i);
+		// Make visible front layout cause due to previous deletion it may be hidden
 		View frontView = viewHolder.itemView.findViewById(R.id.front_layout);
 		frontView.setTranslationX(0);
 		frontView.setAlpha(1);
+		// Fill in views
+		CustomViewForList item = listItems_.get(i);
 		viewHolder.titleTextView.setText(item.getTitle());
 		viewHolder.detailsTextView.setText(item.getDetails());
 		viewHolder.iconImageView.setImageResource(item.getImageResource());
@@ -59,6 +67,18 @@ public class CustomRecyclerViewAdapter extends
 	@Override
 	public int getItemCount() {
 		return listItems_.size();
+	}
+
+	@Override
+	public Filter getFilter() {
+		if (filter_ == null){
+			filter_ = new RecyclerFilter(this, activity_);
+		}
+		return filter_;
+	}
+
+	public List<CustomViewForList> getItems(){
+		return listItems_;
 	}
 
 	/**
