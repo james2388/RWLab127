@@ -174,7 +174,8 @@ public class MainActivity extends ActionBarActivity {
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setCustomView(R.layout.search_bar);
-		final EditText searchEditText = (EditText) actionBar.getCustomView().findViewById(R.id.search_edit_text);
+		final EditText searchEditText = (EditText) actionBar.getCustomView()
+				.findViewById(R.id.search_edit_text);
 		searchEditText.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -283,37 +284,14 @@ public class MainActivity extends ActionBarActivity {
 		throw new NullPointerException("Item you are trying to find is not in a list");
 	}
 
+	/**
+	 * Refreshes list visibility while filtering
+	 *
+	 * @param newItems Items which are visible with search sequence
+	 */
 	public void changeItems(List<CustomViewForList> newItems) {
-
 		itemsList_.clear();
 		itemsList_.addAll(newItems);
-
 		customRecyclerViewAdapter_.notifyDataSetChanged();
-
-
-		/*customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_, this);
-		customRecyclerViewAdapter_.notifyDataSetChanged();
-		int n = 0;
-		for (int i = 0; i < newItems.size(); i++) {
-			Log.d(LOG_TAG, "i: " + String.valueOf(i));
-			Log.d(LOG_TAG, "n: " + String.valueOf(i));
-			CustomViewForList initialItem = itemsList_.get(n);
-			CustomViewForList newItem = newItems.get(i);
-
-			while (!(initialItem.getTitle().equals(newItem.getTitle())
-					&& initialItem.getDetails().equals(newItem.getDetails())) && n < itemsList_.size()){
-				customRecyclerViewAdapter_.notifyItemRemoved(n);
-				n++;
-			}
-
-
-			*//*if (!(initialItem.getTitle().equals(newItem.getTitle())
-					&& initialItem.getDetails().equals(newItem.getDetails()))){
-				customRecyclerViewAdapter_.notifyItemRemoved(n);
-			} else {
-				n++;
-			}*//*
-		}*/
-
 	}
 }

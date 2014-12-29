@@ -6,7 +6,6 @@
  */
 package com.ruswizards.rwlab127;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,17 +70,17 @@ public class CustomRecyclerViewAdapter extends
 
 	@Override
 	public Filter getFilter() {
-		if (filter_ == null){
+		if (filter_ == null) {
 			filter_ = new RecyclerFilter(this, activity_);
 		}
 		return filter_;
 	}
 
-	public void	updateFilter(List<CustomViewForList> tempList){
+	public void updateFilter(List<CustomViewForList> tempList) {
 		filter_.updateInitialItems(tempList);
 	}
 
-	public List<CustomViewForList> getItems(){
+	public List<CustomViewForList> getItems() {
 		return listItems_;
 	}
 
