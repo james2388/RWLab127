@@ -20,6 +20,7 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 	private static final int ANIMATION_DURATION = 500;
 	private static final int VELOCITY_MIN = 1000;            // Min velocity for swipe
 	private static final float SHIFT_PERCENTAGE = 0.4f;        // Min shift when not swiping
+	private static final float ANIMATION_STABILIZATION = 5000;
 
 	private boolean canDelete_;                                // Flag if item can be deleted
 	private MainActivity activity_;
@@ -108,7 +109,7 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 				velocityTracker_.computeCurrentVelocity(1000);
 				float velocityX = velocityTracker_.getXVelocity();
 				velocityTracker_.recycle();
-				// Reset some variables and break if gesture is not horizontal
+				// Reset some variables and perform break if gesture is not horizontal
 				if (swipeDirection_ == Direction.VERTICAL || swipeDirection_ == Direction.STAND) {
 					childView_ = null;
 					break;
@@ -125,16 +126,22 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 				} else {
 					deletedView_ = childView_;
 					canDelete_ = true;
+					int duration = ANIMATION_DURATION;
+					// If swiping calculate duration from velocity
+					if (Math.abs(velocityX) >= VELOCITY_MIN) {
+						duration = (int) ((childWidth - deltaX) / Math.abs(velocityX) *
+								ANIMATION_STABILIZATION);
+					}
 					// Finish move animation
 					if (swipeDirection_ == Direction.RIGHT) {
 						frontLayoutChildView_.animate()
 								.translationX(childWidth)
-								.setDuration(ANIMATION_DURATION)
+								.setDuration(duration)
 								.alpha(0);
 					} else {
 						frontLayoutChildView_.animate()
 								.translationX(-childWidth)
-								.setDuration(ANIMATION_DURATION)
+								.setDuration(duration)
 								.alpha(0);
 					}
 					// Register receiver for undo button
