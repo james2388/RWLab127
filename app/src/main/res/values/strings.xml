@@ -13,4 +13,7 @@
 	<string name="not_linear_layout_manager_exception">DividersItemDecoration can only be used with a LinearLayoutManager.</string>
 	<string name="undo_text_view">Undo</string>
 	<string name="menu_title_search">search</string>
+	<string name="description_action_icon_image_view">Action icon</string>
+	<string name="hint_search_edit_text">search here...</string>
+	<string name="item_not_found_exception">Item you are trying to find is not in a list</string>
 </resources>

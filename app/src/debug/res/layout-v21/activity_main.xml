@@ -6,6 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	app:designSpec="@raw/my_spec">
+
 	<RelativeLayout
 		android:id="@+id/main_layout"
 		android:layout_width="match_parent"
@@ -22,12 +23,14 @@
 			android:orientation="vertical"
 			android:paddingStart="@dimen/upper_tile_left_padding"
 			app:onSpecialClick="onSpecialClick">
+
 			<TextView
 				android:id="@+id/title_text_view"
 				style="@android:style/TextAppearance.Material.Title"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/text_view_title"/>
+
 			<TextView
 				android:id="@+id/details_text_view"
 				style="@android:style/TextAppearance.Material.Body1"
@@ -55,6 +58,6 @@
 			android:background="@drawable/fab_shape"
 			android:contentDescription="@string/fab_description"
 			android:elevation="@dimen/fab_elevation"
-			android:onClick="onClick" />
+			android:onClick="onClick"/>
 	</RelativeLayout>
 </org.lucasr.dspec.DesignSpecFrameLayout>

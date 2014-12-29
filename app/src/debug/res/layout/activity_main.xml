@@ -6,6 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	app:designSpec="@raw/my_spec">
+
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -20,12 +21,14 @@
 			android:orientation="vertical"
 			android:paddingLeft="@dimen/upper_tile_left_padding"
 			app:onSpecialClick="onSpecialClick">
+
 			<TextView
 				android:id="@+id/title_text_view"
 				style="@style/HeaderTextTitle"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/text_view_title"/>
+
 			<TextView
 				android:id="@+id/details_text_view"
 				style="@style/TextDetails"

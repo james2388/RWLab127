@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Filter class for RecyclerView
  */
-public class RecyclerFilter extends Filter {
-	private List<CustomViewForList> initialList_;
-	private MainActivity activity_;
+class RecyclerFilter extends Filter {
+	private final List<CustomViewForList> initialList_;
+	private final MainActivity activity_;
 
 	RecyclerFilter(CustomRecyclerViewAdapter customRecyclerViewAdapter, MainActivity activity) {
 		activity_ = activity;
@@ -50,7 +50,7 @@ public class RecyclerFilter extends Filter {
 	}
 
 	/**
-	 * Calls MainActivity.changeItems to apply filter to RecyclerView
+	 * Calls MainActivity.changeItems to apply filtering results to RecyclerView
 	 *
 	 * @param constraint Search sequence
 	 * @param results    FilterResults object with search results

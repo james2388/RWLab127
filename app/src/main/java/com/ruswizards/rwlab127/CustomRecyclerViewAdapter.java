@@ -26,7 +26,7 @@ public class CustomRecyclerViewAdapter extends
 
 	private final List<CustomViewForList> listItems_;
 	private RecyclerFilter filter_;
-	private MainActivity activity_;
+	private final MainActivity activity_;
 
 	public CustomRecyclerViewAdapter(List<CustomViewForList> listItems, MainActivity activity) {
 		listItems_ = listItems;
@@ -51,15 +51,15 @@ public class CustomRecyclerViewAdapter extends
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, int i) {
 		// Reverse all changes to layout made by previous gestures
-		View view = viewHolder.itemView.findViewById(R.id.front_layout);
-		view.setTranslationX(0);
-		view.setAlpha(1);
-		view = viewHolder.itemView.findViewById(R.id.actions_frame_layout);
-		view.setLayoutParams(
-				new FrameLayout.LayoutParams(0 , ViewGroup.LayoutParams.MATCH_PARENT)
+		View tempView = viewHolder.itemView.findViewById(R.id.front_layout);
+		tempView.setTranslationX(0);
+		tempView.setAlpha(1);
+		tempView = viewHolder.itemView.findViewById(R.id.actions_frame_layout);
+		tempView.setLayoutParams(
+				new FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT)
 		);
-		view = viewHolder.itemView.findViewById(R.id.first_action_image_view);
-		view.setVisibility(ImageView.GONE);
+		tempView = viewHolder.itemView.findViewById(R.id.action_image_view);
+		tempView.setVisibility(ImageView.GONE);
 		// Fill in views
 		CustomViewForList item = listItems_.get(i);
 		viewHolder.titleTextView.setText(item.getTitle());
@@ -83,10 +83,17 @@ public class CustomRecyclerViewAdapter extends
 		return filter_;
 	}
 
+	/**
+	 * Updates initial items list in a filter.
+	 */
 	public void updateFilter(List<CustomViewForList> tempList) {
 		filter_.updateInitialItems(tempList);
 	}
 
+	/**
+	 * Method to get an items list from adapter
+	 * @return Items list
+	 */
 	public List<CustomViewForList> getItems() {
 		return listItems_;
 	}

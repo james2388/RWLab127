@@ -106,11 +106,12 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 
 	/**
 	 * Compares all data of an instance object with comparison item data
+	 *
 	 * @param comparison Object to compare with
 	 * @return True if objects are equals, false otherwise
 	 */
 	public boolean isEqual(CustomViewForList comparison) {
-		return (title_ == comparison.title_ && details_ == comparison.details_ && iconResource_
-				== comparison.iconResource_);
+		return (title_.equals(comparison.title_) && details_.equals(comparison.details_)
+				&& iconResource_ == comparison.iconResource_);
 	}
 }

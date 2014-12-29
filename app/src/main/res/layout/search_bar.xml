@@ -6,6 +6,7 @@
 
 	<EditText
 		android:id="@+id/search_edit_text"
+		android:hint="@string/hint_search_edit_text"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
 </RelativeLayout>
