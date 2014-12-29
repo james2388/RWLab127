@@ -197,7 +197,6 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void openSearch() {
 		// Register onTextChanged listener for the EditText view
-		Log.d("----", "Opensearch");
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setCustomView(R.layout.search_bar);
