@@ -11,7 +11,11 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Class to implement RecyclerView.OnItemTouchListener interface
@@ -19,7 +23,8 @@ import android.widget.TextView;
 public class TouchListener implements RecyclerView.OnItemTouchListener {
 	private static final int ANIMATION_DURATION = 500;
 	private static final int VELOCITY_MIN = 1000;            // Min velocity for swipe
-	private static final float SHIFT_PERCENTAGE = 0.4f;        // Min shift when not swiping
+	private static final float LEFT_SHIFT_PERCENTAGE = 0.4f;        // Min shift when not swiping
+	private static final float RIGHT_SHIFT_PERCENTAGE = 0.5f; // Shift from wich action 2 is started
 	private static final float ANIMATION_STABILIZATION = 5000;
 
 	private boolean canDelete_;                                // Flag if item can be deleted
@@ -94,13 +99,36 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 				}
 				// Move view along gesture and change its transparency
 				int childWidth;
-				if (swipeDirection_ == Direction.RIGHT || swipeDirection_ == Direction.LEFT) {
+				childWidth = frontLayoutChildView_.getWidth();
+				if (swipeDirection_ == Direction.LEFT) {
 					frontLayoutChildView_.setTranslationX(deltaX - slop_);
-					childWidth = frontLayoutChildView_.getWidth();
 					frontLayoutChildView_.setAlpha(1 - deltaX / childWidth);
 				}
-				break;
+				if (swipeDirection_ == Direction.RIGHT) {
+					frontLayoutChildView_.setTranslationX(deltaX - slop_);
+					FrameLayout actionsFrame =
+							(FrameLayout) childView_.findViewById(R.id.actions_frame_layout);
+					actionsFrame.setLayoutParams(
+							new FrameLayout.LayoutParams((int) deltaX - slop_
+									, ViewGroup.LayoutParams.MATCH_PARENT)
+					);
 
+					ImageView actionImageView =
+							(ImageView) childView_.findViewById(R.id.first_action_image_view);
+					if (actionImageView.getVisibility() == ImageView.GONE) {
+						actionImageView.setVisibility(ImageView.VISIBLE);
+					}
+					if (deltaX > childWidth / 2) {
+						actionImageView.setImageResource(android.R.drawable.ic_dialog_email);
+						actionsFrame.setBackgroundColor(
+								childView_.getResources().getColor(R.color.accentDark));
+					} else if (deltaX < childWidth / 2) {
+						actionImageView.setImageResource(android.R.drawable.ic_dialog_info);
+						actionsFrame.setBackgroundColor(
+								childView_.getResources().getColor(R.color.ripple_color));
+					}
+				}
+				break;
 			case MotionEvent.ACTION_UP:
 				if (childView_ == null) {
 					break;
@@ -114,22 +142,20 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 					childView_ = null;
 					break;
 				}
-				// Animates view depends on gestures' strength. Prepares view for deleting
+				// Check gesture direction. If left: animate view depends on gestures' strength and
+				// prepare view for deleting. If right: make toast for appropriate action ( 1 or 2)
+				// and delete item
 				deltaX = event.getX() - initialX_;
 				childWidth = frontLayoutChildView_.getWidth();
-				if (Math.abs(deltaX) < childWidth * SHIFT_PERCENTAGE
-						&& Math.abs(velocityX) < VELOCITY_MIN) {
-					frontLayoutChildView_.animate()
-							.translationX(0)
-							.setDuration(ANIMATION_DURATION)
-							.alpha(1);
-				} else {
+				if (swipeDirection_ == Direction.LEFT &&
+						(Math.abs(velocityX) >= VELOCITY_MIN
+								|| Math.abs(deltaX) > childWidth * LEFT_SHIFT_PERCENTAGE)) {
 					deletedView_ = childView_;
 					canDelete_ = true;
 					int duration = ANIMATION_DURATION;
-					// If swiping calculate duration from velocity
+					// Calculate duration from velocity if swiping
 					if (Math.abs(velocityX) >= VELOCITY_MIN) {
-						duration = (int) ((childWidth - deltaX) / Math.abs(velocityX) *
+						duration = (int) ((childWidth - Math.abs(deltaX)) / Math.abs(velocityX) *
 								ANIMATION_STABILIZATION);
 					}
 					// Finish move animation
@@ -157,6 +183,26 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 							deletedView_ = null;
 						}
 					});
+				} else if (swipeDirection_ == Direction.RIGHT && deltaX > slop_) {
+					if (deltaX < childWidth * RIGHT_SHIFT_PERCENTAGE) {
+						// Action 1
+						Toast.makeText(activity_, "Action 1", Toast.LENGTH_SHORT).show();
+					} else {
+						// Action 2
+						Toast.makeText(activity_, "Action 2", Toast.LENGTH_SHORT).show();
+					}
+					activity_.deleteItem(recyclerView_.getChildPosition(childView_));
+				} else {
+					frontLayoutChildView_.animate()
+							.translationX(0)
+							.setDuration(ANIMATION_DURATION)
+							.alpha(1);
+					View tempView = childView_.findViewById(R.id.first_action_image_view);
+					tempView.setVisibility(ImageView.GONE);
+					tempView = childView_.findViewById(R.id.actions_frame_layout);
+					tempView.setLayoutParams(
+							new FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT)
+					);
 				}
 				break;
 			default:

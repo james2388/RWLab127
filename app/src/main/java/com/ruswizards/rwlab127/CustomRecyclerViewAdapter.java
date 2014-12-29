@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,10 +50,16 @@ public class CustomRecyclerViewAdapter extends
 	 */
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, int i) {
-		// Make visible front layout cause due to previous deletion it may be hidden
-		View frontView = viewHolder.itemView.findViewById(R.id.front_layout);
-		frontView.setTranslationX(0);
-		frontView.setAlpha(1);
+		// Reverse all changes to layout made by previous gestures
+		View view = viewHolder.itemView.findViewById(R.id.front_layout);
+		view.setTranslationX(0);
+		view.setAlpha(1);
+		view = viewHolder.itemView.findViewById(R.id.actions_frame_layout);
+		view.setLayoutParams(
+				new FrameLayout.LayoutParams(0 , ViewGroup.LayoutParams.MATCH_PARENT)
+		);
+		view = viewHolder.itemView.findViewById(R.id.first_action_image_view);
+		view.setVisibility(ImageView.GONE);
 		// Fill in views
 		CustomViewForList item = listItems_.get(i);
 		viewHolder.titleTextView.setText(item.getTitle());
