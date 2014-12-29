@@ -71,7 +71,8 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 				break;
 
 			case MotionEvent.ACTION_MOVE:
-				if (childView_ == null || swipeDirection_ == Direction.VERTICAL || childView_ == deletedView_) {
+				if (childView_ == null || swipeDirection_ == Direction.VERTICAL
+						|| childView_ == deletedView_) {
 					break;
 				}
 				velocityTracker_.addMovement(event);

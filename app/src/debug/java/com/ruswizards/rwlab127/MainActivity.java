@@ -6,7 +6,6 @@
  */
 package com.ruswizards.rwlab127;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
 	private CustomRecyclerViewAdapter customRecyclerViewAdapter_;
 	private List<CustomViewForList> itemsList_;
 	private DesignSpecFrameLayout designSpecFrameLayout_;
-	private TouchListener touchListenerRecycler_;
+	private TouchListener touchListener_;
 	private MenuItem searchAction_;
 	private boolean isSearchOpened_;
 	private RecyclerView recyclerView_;
@@ -56,12 +54,8 @@ public class MainActivity extends ActionBarActivity {
 		} else {
 			itemsList_ = new ArrayList<>();
 			tempList_ = new ArrayList<>();
-//			Random generator = new Random();
 			for (int i = 0; i < 5; i++) {
 				addRandomItem(i);
-				/*CustomViewForList customViewForList = new CustomViewForList(
-						this, randomString(3), randomString(5), generator.nextInt(4));
-				itemsList_.add(customViewForList);*/
 			}
 		}
 		//Set up RecyclerView
@@ -70,8 +64,8 @@ public class MainActivity extends ActionBarActivity {
 		recyclerView_.setLayoutManager(linearLayoutManager);
 		recyclerView_.setItemAnimator(new DefaultItemAnimator());
 		//Set up item touch listener
-		touchListenerRecycler_ = new TouchListener(this);
-		recyclerView_.addOnItemTouchListener(touchListenerRecycler_);
+		touchListener_ = new TouchListener(this);
+		recyclerView_.addOnItemTouchListener(touchListener_);
 		// Specify and set up an adapter
 		customRecyclerViewAdapter_ = new CustomRecyclerViewAdapter(itemsList_, this);
 		recyclerView_.setAdapter(customRecyclerViewAdapter_);
@@ -93,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
 		boolean result = super.dispatchTouchEvent(ev);
 		// Check if items of RecyclerView should be deleted if touch is outside RecyclerView
 		if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
-			touchListenerRecycler_.checkForDeletion();
+			touchListener_.checkForDeletion();
 		}
 		return result;
 	}
@@ -109,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
 		StringBuilder randomStringBuilder = new StringBuilder();
 		char tempChar;
 		for (int i = 0; i < length; i++) {
-			tempChar = (char) (generator.nextInt(96) + 32);
+			tempChar = (char) (generator.nextInt(10) + 72);
 			randomStringBuilder.append(tempChar);
 		}
 		return randomStringBuilder.toString();
@@ -146,7 +140,7 @@ public class MainActivity extends ActionBarActivity {
 				item.setChecked(!item.isChecked());
 				break;
 			case R.id.search_action:
-				if (isSearchOpened_){
+				if (isSearchOpened_) {
 					closeSearch();
 					changeItems(tempList_);
 				} else {
@@ -159,22 +153,28 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Closes previously opened search field
+	 */
 	private void closeSearch() {
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowCustomEnabled(false);
 		actionBar.setCustomView(R.layout.search_bar);
-
 		searchAction_.setIcon(getResources().getDrawable(R.drawable.abc_ic_search_api_mtrl_alpha));
 
 		isSearchOpened_ = false;
 	}
 
+	/**
+	 * Opens search field and registers onTextChanged listener for the EditText field within
+	 * search area
+	 */
 	private void openSearch() {
+		// Register onTextChanged listener for the EditText view
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setCustomView(R.layout.search_bar);
-
-		final EditText searchEditText = (EditText)actionBar.getCustomView().findViewById(R.id.search_edit_text);
+		final EditText searchEditText = (EditText) actionBar.getCustomView().findViewById(R.id.search_edit_text);
 		searchEditText.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -189,7 +189,7 @@ public class MainActivity extends ActionBarActivity {
 			public void afterTextChanged(Editable s) {
 			}
 		});
-
+		// Change search icon
 		searchAction_.setIcon(getResources().getDrawable(R.drawable.abc_ic_clear_mtrl_alpha));
 		isSearchOpened_ = true;
 	}
@@ -224,12 +224,22 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void addRandomItem(int position) {
 		CustomViewForList customViewForList = new CustomViewForList(
-				this, randomString(3), randomString(5), (int) new Random().nextInt(1000)/250);
+				this, randomString(3), randomString(5), (int) new Random().nextInt(1000) / 250);
 		itemsList_.add(position, customViewForList);
+		if (isSearchOpened_) {
+			tempList_.add(position, customViewForList);
+			customRecyclerViewAdapter_.updateFilter(tempList_);
+			EditText searchEditText = (EditText) getSupportActionBar()
+					.getCustomView()
+					.findViewById(R.id
+							.search_edit_text);
+			customRecyclerViewAdapter_.getFilter().filter(searchEditText.getText());
+		}
 	}
 
 	/**
-	 * Deletes item from RecyclerView and notifies RecycleViewAdapter
+	 * Deletes item from RecyclerView and notifies RecycleViewAdapter. If search filter is active
+	 * also synchronizes items list with filters' copy
 	 *
 	 * @param position Item position in RecyclerView
 	 */
@@ -240,8 +250,37 @@ public class MainActivity extends ActionBarActivity {
 		if (position == itemsList_.size()) {
 			position = itemsList_.size() - 1;
 		}
+		// Delete item from tempList and filters' copy of items list. Finds absolute position of
+		// deleted item to do this.
+		if (isSearchOpened_) {
+			try {
+				int absolutPosition = findItem(tempList_, itemsList_.get(position));
+				tempList_.remove(absolutPosition);
+				customRecyclerViewAdapter_.updateFilter(tempList_);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Delete item from visible list
 		itemsList_.remove(position);
 		customRecyclerViewAdapter_.notifyItemRemoved(position);
+	}
+
+	/**
+	 * Searches CustomViewForList object in a list
+	 *
+	 * @param tempList     List where object should be found
+	 * @param deletedView_ Wanted object
+	 * @throws NullPointerException Exception to throw if object not found
+	 */
+	private int findItem(List<CustomViewForList> tempList, CustomViewForList deletedView_) throws
+			NullPointerException {
+		for (int i = 0; i < tempList.size(); i++) {
+			if (tempList.get(i).isEqual(deletedView_)) {
+				return i;
+			}
+		}
+		throw new NullPointerException("Item you are trying to find is not in a list");
 	}
 
 	public void changeItems(List<CustomViewForList> newItems) {

@@ -77,6 +77,10 @@ public class CustomRecyclerViewAdapter extends
 		return filter_;
 	}
 
+	public void	updateFilter(List<CustomViewForList> tempList){
+		filter_.updateInitialItems(tempList);
+	}
+
 	public List<CustomViewForList> getItems(){
 		return listItems_;
 	}

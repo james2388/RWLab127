@@ -1,56 +1,72 @@
-package com.ruswizards.rwlab127;
-
-import android.nfc.NfcEvent;
-import android.util.Log;
-import android.widget.Filter;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Copyright (C) 2014 Rus Wizards
  * <p/>
  * Created: 25.12.2014
  * Vladimir Farafonov
  */
-public class RecyclerFilter extends Filter {
-	private static final String LOG_TAG = "RecyclerFilter";
-	private List<CustomViewForList> initialList_;
-	private CustomRecyclerViewAdapter clientAdapter_;
-	private MainActivity activity_;
-	private List<CustomViewForList> filteredItemsList_;
+package com.ruswizards.rwlab127;
 
-	RecyclerFilter(CustomRecyclerViewAdapter customRecyclerViewAdapter, MainActivity activity){
-		clientAdapter_ = customRecyclerViewAdapter;
+import android.widget.Filter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Filter class for RecyclerView
+ */
+public class RecyclerFilter extends Filter {
+	private List<CustomViewForList> initialList_;
+	private MainActivity activity_;
+
+	RecyclerFilter(CustomRecyclerViewAdapter customRecyclerViewAdapter, MainActivity activity) {
 		activity_ = activity;
-		Log.d(LOG_TAG, "CONSTRUCTOR");
-		filteredItemsList_ = new ArrayList<>();
 		initialList_ = new ArrayList<>();
-		initialList_.addAll(clientAdapter_.getItems());
+		initialList_.addAll(customRecyclerViewAdapter.getItems());
 	}
 
+	/**
+	 * Filters items list to find items matched search criteria. Filter scans title and detail
+	 * fields
+	 *
+	 * @param constraint Search sequence
+	 * @return FilterResults object
+	 */
 	@Override
 	protected FilterResults performFiltering(CharSequence constraint) {
-		Log.d(LOG_TAG, "Filtering: |" + constraint + "|");
-		Log.d(LOG_TAG, "Initial size: |" + String.valueOf(initialList_.size()) + "|");
-
 		FilterResults filteredResults = new FilterResults();
 		constraint = constraint.toString().toLowerCase();
-		filteredItemsList_.clear();
+		List<CustomViewForList> filteredItemsList = new ArrayList<>();
 		for (int i = 0; i < initialList_.size(); i++) {
 			CustomViewForList currentItem = initialList_.get(i);
-			if (currentItem.getTitle().toLowerCase().contains(constraint) || currentItem.getDetails().toLowerCase().contains(constraint)){
-				filteredItemsList_.add(currentItem);
+			if (currentItem.getTitle().toLowerCase().contains(constraint)
+					|| currentItem.getDetails().toLowerCase().contains(constraint)) {
+				filteredItemsList.add(currentItem);
 			}
 		}
-		filteredResults.count = filteredItemsList_.size();
-		filteredResults.values = filteredItemsList_;
+		filteredResults.count = filteredItemsList.size();
+		filteredResults.values = filteredItemsList;
+
 		return filteredResults;
-		//TODO: add support of changing list (items could be added/deleted);
 	}
 
+	/**
+	 * Calls MainActivity.changeItems to apply filter to RecyclerView
+	 *
+	 * @param constraint Search sequence
+	 * @param results    FilterResults object with search results
+	 */
 	@Override
 	protected void publishResults(CharSequence constraint, FilterResults results) {
-		activity_.changeItems(filteredItemsList_);
+		activity_.changeItems((List<CustomViewForList>) results.values);
+	}
+
+	/**
+	 * Synchronize initial items list when some items were deleted or new items were added
+	 *
+	 * @param tempList List to synchronize to.
+	 */
+	public void updateInitialItems(List<CustomViewForList> tempList) {
+		initialList_.clear();
+		initialList_.addAll(tempList);
 	}
 }
