@@ -22,10 +22,11 @@ import android.widget.Toast;
  */
 public class TouchListener implements RecyclerView.OnItemTouchListener {
 	private static final int ANIMATION_DURATION = 500;
-	private static final int VELOCITY_MIN = 1000;            // Min velocity for swipe
+	private static final int VELOCITY_MIN = 1;            // Min velocity for swipe
 	private static final float LEFT_SHIFT_PERCENTAGE = 0.4f;        // Min shift when not swiping
 	private static final float RIGHT_SHIFT_PERCENTAGE = 0.5f; // Shift from which action 2 is started
-	private static final float ANIMATION_STABILIZATION = 5000;
+	private static final float ANIMATION_SPEED_MULTIPLIER = 0.5f;
+	private static final int VELOCITY_SEC_COUNT = 1;
 	private final MainActivity activity_;
 	private final int slop_;                                        // Touch slop
 	private boolean canDelete_;                                // Flag if item can be deleted
@@ -37,10 +38,12 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 	private Direction swipeDirection_;
 	private View deletedView_;
 	private RecyclerView recyclerView_;
+	public static boolean isTouched;
 
 	TouchListener(MainActivity activity) {
 		activity_ = activity;
 		slop_ = ViewConfiguration.get(activity_).getScaledTouchSlop();
+		swipeDirection_ = Direction.STAND;
 	}
 
 	/**
@@ -60,24 +63,26 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 		int action = event.getActionMasked();
 		switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				isTouched = true;
 				// Save touch and initial parameters
 				initialX_ = event.getX();
 				initialY_ = event.getY();
 				childView_ = rv.findChildViewUnder(initialX_, initialY_);
 				if (childView_ == null) {                        // Touch is in the recycler view,
-					break;                                        // but out of any child view
+					return false;                                 // but out of any child view
 				}
 				frontLayoutChildView_ = childView_.findViewById(R.id.front_layout);
 				swipeDirection_ = Direction.STAND;
 				velocityTracker_ = VelocityTracker.obtain();
 				velocityTracker_.addMovement(event);
 				// Check if user tapped again on the same tile he wants to delete
-				canDelete_ = !(deletedView_ != null && deletedView_ == childView_);
-				break;
+				canDelete_ = deletedView_ != null && !(deletedView_ == childView_);
+//				break;
+				return false;
 			case MotionEvent.ACTION_MOVE:
 				if (childView_ == null || swipeDirection_ == Direction.VERTICAL
 						|| childView_ == deletedView_) {
-					break;
+					return false;
 				}
 				velocityTracker_.addMovement(event);
 				float deltaX = event.getX() - initialX_;
@@ -96,7 +101,7 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 					}
 				}
 				// Move view along gesture and change its transparency
-				int childWidth;
+				final int childWidth;
 				childWidth = frontLayoutChildView_.getWidth();
 				if (swipeDirection_ == Direction.LEFT) {
 					// Change position ans transparency while sliding left
@@ -127,19 +132,21 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 								childView_.getResources().getColor(R.color.ripple_color));
 					}
 				}
-				break;
+//				break;
+				return false;
 			case MotionEvent.ACTION_UP:
+				isTouched = false;
 				if (childView_ == null) {
-					break;
+					return false;
 				}
 				velocityTracker_.addMovement(event);
-				velocityTracker_.computeCurrentVelocity(1000);
+				velocityTracker_.computeCurrentVelocity(VELOCITY_SEC_COUNT);
 				float velocityX = velocityTracker_.getXVelocity();
 				velocityTracker_.recycle();
 				// Reset some variables and perform break if gesture is not horizontal
 				if (swipeDirection_ == Direction.VERTICAL || swipeDirection_ == Direction.STAND) {
 					childView_ = null;
-					break;
+					return false;
 				}
 				// Check gesture direction. If left: animate view depends on gestures' strength and
 				// prepare view for deleting. If right: make toast for appropriate action ( 1 or 2)
@@ -154,21 +161,13 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 					int duration = ANIMATION_DURATION;
 					// Calculate duration from velocity if swiping
 					if (Math.abs(velocityX) >= VELOCITY_MIN) {
-						duration = (int) ((childWidth - Math.abs(deltaX)) / Math.abs(velocityX) *
-								ANIMATION_STABILIZATION);
+						duration = (int) ((childWidth - Math.abs(deltaX)) / Math.abs(velocityX) /
+								ANIMATION_SPEED_MULTIPLIER);
 					}
-					// Finish move animation
-					if (swipeDirection_ == Direction.RIGHT) {
-						frontLayoutChildView_.animate()
-								.translationX(childWidth)
-								.setDuration(duration)
-								.alpha(0);
-					} else {
-						frontLayoutChildView_.animate()
-								.translationX(-childWidth)
-								.setDuration(duration)
-								.alpha(0);
-					}
+					frontLayoutChildView_.animate()
+							.translationX(-childWidth)
+							.setDuration(duration)
+							.alpha(0);
 					// Register receiver for undo button
 					TextView undoTextView = (TextView) childView_.findViewById(R.id.undo_text_view);
 					undoTextView.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +179,8 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 									.setDuration(ANIMATION_DURATION)
 									.alpha(1);
 							deletedView_ = null;
+							canDelete_ = false;
+							childView_ = null;
 						}
 					});
 				} else if (swipeDirection_ == Direction.RIGHT && deltaX > slop_) {
@@ -203,11 +204,10 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 							new FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT)
 					);
 				}
-				break;
+				return false;
 			default:
-				break;
+				return false;
 		}
-		return false;
 	}
 
 	@Override
@@ -219,9 +219,10 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 	 */
 	public void checkForDeletion() {
 		if (deletedView_ != null && canDelete_) {
-			activity_.deleteItem(recyclerView_.getChildPosition(deletedView_));
 			canDelete_ = false;
+			int position = recyclerView_.getChildPosition(deletedView_);
 			deletedView_ = null;
+			activity_.deleteItem(position);
 		}
 	}
 

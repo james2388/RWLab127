@@ -7,6 +7,7 @@
 package com.ruswizards.rwlab127;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +73,11 @@ public class CustomRecyclerViewAdapter extends
 		CustomViewForList item = listItems_.get(i);
 		viewHolder.titleTextView.setText(item.getTitle());
 		viewHolder.detailsTextView.setText(item.getDetails());
-		viewHolder.iconImageView.setImageResource(item.getImageResource());
+		if (item.isIconDrawable()){
+			viewHolder.iconImageView.setImageDrawable(item.getIconDrawable());
+		} else {
+			viewHolder.iconImageView.setImageResource(item.getIconResource());
+		}
 	}
 
 	/**

@@ -68,19 +68,16 @@ public class MainActivity extends ActionBarActivity {
 		} else {
 			itemsList_ = new ArrayList<>();
 			tempList_ = new ArrayList<>();
-			/*for (int i = 0; i < 5; i++) {
-				addRandomItem(i);
-			}*/
 			PackageManager packageManager = getPackageManager();
 			List<ApplicationInfo> applications =
 					packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
 			for (ApplicationInfo application : applications){
 				CustomViewForList item = new CustomViewForList(
 						this,
-						String.valueOf(application.loadLabel(packageManager) + " / " + application.processName),
-						application.dataDir + application.dataDir + application.dataDir,
-						// TODO: pick icon from ApplicationInfo
-						new Random().nextInt(1000) / 250);
+						String.valueOf(application.loadLabel(packageManager)
+								+ " / " + application.processName),
+						application.dataDir,
+						application.loadIcon(packageManager));
 				itemsList_.add(item);
 			}
 		}
@@ -92,15 +89,22 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onAddFinished(RecyclerView.ViewHolder item) {
 				super.onAddFinished(item);
-				customRecyclerViewAdapter_.notifyDataSetChanged();
+				// Wrapped with try/catch cause exception is thrown if user adds another item while
+				// previous animation is not finished
+				try {
+					customRecyclerViewAdapter_.notifyDataSetChanged();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-
-			@Override
+			// TODO: figure out why it is bug here when fast swiping and uncommented below
+			/*@Override
 			public void onRemoveFinished(RecyclerView.ViewHolder item) {
 				super.onRemoveFinished(item);
-				endAnimations();
-				customRecyclerViewAdapter_.notifyDataSetChanged();
-			}
+				if (!TouchListener.isTouched) {
+					customRecyclerViewAdapter_.notifyDataSetChanged();
+				}
+			}*/
 		});
 		//Set up item touch listener
 		touchListener_ = new TouchListener(this);
@@ -141,6 +145,7 @@ public class MainActivity extends ActionBarActivity {
 		// Check if items of RecyclerView should be deleted if touch is outside RecyclerView
 		if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
 			touchListener_.checkForDeletion();
+
 		}
 		return result;
 	}

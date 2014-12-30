@@ -7,6 +7,7 @@
 package com.ruswizards.rwlab127;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 	private String title_;
 	private String details_;
 	private int iconResource_;
+	private Drawable iconDrawable_;
 
 	public CustomViewForList(Context context) {
 		this(context, null);
@@ -43,10 +45,9 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 
 	/**
 	 * Calls {@link #CustomViewForList(android.content.Context, android.util.AttributeSet)}, saves
-	 * {@link #title_}, {@link #details_}, {@link #iconResource_} values and fills views in
-	 * a view holder
+	 * {@link #title_}, {@link #details_} values and fills title and details views in a view holder
 	 */
-	public CustomViewForList(Context context, String title, String details, int imageNumber) {
+	public CustomViewForList (Context context, String title, String details){
 		this(context, null);
 		title_ = title;
 		TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
@@ -55,7 +56,14 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 		details_ = details;
 		TextView detailsTextView = (TextView) findViewById(R.id.details_text_view);
 		detailsTextView.setText(details);
+	}
 
+	/**
+	 * Calls {@link #CustomViewForList(android.content.Context, String, String)}, saves
+	 * {@link #iconResource_} value and fills in icon view
+	 */
+	public CustomViewForList(Context context, String title, String details, int imageNumber) {
+		this(context, title, details);
 		ImageView iconImageView = (ImageView) findViewById(R.id.iconImageView);
 		switch (imageNumber) {
 			case 0:
@@ -78,6 +86,17 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 	}
 
 	/**
+	 * Calls {@link #CustomViewForList(android.content.Context, String, String)}, saves
+	 * {@link #iconResource_} value and fills in icon view
+	 */
+	public CustomViewForList(Context context, String title, String details, Drawable icon) {
+		this(context, title, details);
+		iconDrawable_ = icon;
+		ImageView iconImageView = (ImageView) findViewById(R.id.iconImageView);
+		iconImageView.setImageDrawable(iconDrawable_);
+	}
+
+	/**
 	 * Gets a title field content
 	 *
 	 * @return Title
@@ -96,12 +115,28 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 	}
 
 	/**
-	 * Gets an icon's drawable resource
+	 * Gets an icon's resource id
 	 *
-	 * @return Icon's drawable resource
+	 * @return Icon's resource id
 	 */
-	public int getImageResource() {
+	public int getIconResource() {
 		return iconResource_;
+	}
+
+	/**
+	 * Gets an icon's drawable
+	 * @return Icon's drawable
+	 */
+	public Drawable getIconDrawable(){
+		return iconDrawable_;
+	}
+
+	/**
+	 * Check what kind of source is used for icon
+	 * @return True if used Drawable and false otherwise
+	 */
+	public boolean isIconDrawable(){
+		return iconDrawable_ != null;
 	}
 
 	/**
