@@ -54,12 +54,14 @@
 		<TextView
 			android:id="@+id/title_text_view"
 			style="@style/TextTitle"
+			android:ellipsize="end"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="@dimen/recycler_view_item_inner_layout_left_padding"
 			android:layout_marginStart="@dimen/recycler_view_item_inner_layout_left_padding"
 			android:layout_toEndOf="@+id/iconImageView"
-			android:layout_toRightOf="@+id/iconImageView"/>
+			android:layout_toRightOf="@+id/iconImageView"
+			android:singleLine="true" />
 		<TextView
 			android:id="@+id/details_text_view"
 			style="@style/TextDetails"
@@ -69,6 +71,11 @@
 			android:layout_marginLeft="@dimen/recycler_view_item_inner_layout_left_padding"
 			android:layout_marginStart="@dimen/recycler_view_item_inner_layout_left_padding"
 			android:layout_toEndOf="@+id/iconImageView"
-			android:layout_toRightOf="@+id/iconImageView"/>
+			android:layout_toRightOf="@+id/iconImageView"
+			android:requiresFadingEdge="horizontal"
+			android:fadingEdgeLength="@dimen/fading_edge_length"
+			android:ellipsize="none"
+			android:singleLine="true"
+			/>
 	</RelativeLayout>
 </FrameLayout>

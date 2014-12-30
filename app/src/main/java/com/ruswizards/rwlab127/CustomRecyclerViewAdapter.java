@@ -27,6 +27,7 @@ public class CustomRecyclerViewAdapter extends
 	private final List<CustomViewForList> listItems_;
 	private RecyclerFilter filter_;
 	private final MainActivity activity_;
+	private boolean showDetails_;
 
 	public CustomRecyclerViewAdapter(List<CustomViewForList> listItems, MainActivity activity) {
 		listItems_ = listItems;
@@ -60,6 +61,13 @@ public class CustomRecyclerViewAdapter extends
 		);
 		tempView = viewHolder.itemView.findViewById(R.id.action_image_view);
 		tempView.setVisibility(ImageView.GONE);
+		// Hide even items details text view
+		tempView = viewHolder.itemView.findViewById(R.id.details_text_view);
+		if ((i & 1) == 0) {
+			tempView.setVisibility(View.GONE);
+		} else {
+			tempView.setVisibility(View.VISIBLE);
+		}
 		// Fill in views
 		CustomViewForList item = listItems_.get(i);
 		viewHolder.titleTextView.setText(item.getTitle());

@@ -6,6 +6,8 @@
  */
 package com.ruswizards.rwlab127;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
@@ -38,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
 	private static final String STATE_TEMP_LIST = "TempList";
 	private static final String STATE_IS_SEARCHING = "isSearching";
 	private static final String STATE_SEARCH_TEXT = "SearchText";
+	private static final String LOG_TAG = "MainActivity";
 
 	private CustomRecyclerViewAdapter customRecyclerViewAdapter_;
 	private List<CustomViewForList> itemsList_;
@@ -50,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_main);
 		designSpecFrameLayout_ = (DesignSpecFrameLayout) findViewById(R.id.design_spec_layout);
 		// Retain state
@@ -64,15 +68,40 @@ public class MainActivity extends ActionBarActivity {
 		} else {
 			itemsList_ = new ArrayList<>();
 			tempList_ = new ArrayList<>();
-			for (int i = 0; i < 5; i++) {
+			/*for (int i = 0; i < 5; i++) {
 				addRandomItem(i);
+			}*/
+			PackageManager packageManager = getPackageManager();
+			List<ApplicationInfo> applications =
+					packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
+			for (ApplicationInfo application : applications){
+				CustomViewForList item = new CustomViewForList(
+						this,
+						String.valueOf(application.loadLabel(packageManager) + " / " + application.processName),
+						application.dataDir + application.dataDir + application.dataDir,
+						// TODO: pick icon from ApplicationInfo
+						new Random().nextInt(1000) / 250);
+				itemsList_.add(item);
 			}
 		}
 		//Set up RecyclerView
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(linearLayoutManager);
-		recyclerView.setItemAnimator(new DefaultItemAnimator());
+		recyclerView.setItemAnimator(new DefaultItemAnimator(){
+			@Override
+			public void onAddFinished(RecyclerView.ViewHolder item) {
+				super.onAddFinished(item);
+				customRecyclerViewAdapter_.notifyDataSetChanged();
+			}
+
+			@Override
+			public void onRemoveFinished(RecyclerView.ViewHolder item) {
+				super.onRemoveFinished(item);
+				endAnimations();
+				customRecyclerViewAdapter_.notifyDataSetChanged();
+			}
+		});
 		//Set up item touch listener
 		touchListener_ = new TouchListener(this);
 		recyclerView.addOnItemTouchListener(touchListener_);
@@ -242,6 +271,8 @@ public class MainActivity extends ActionBarActivity {
 				recyclerView.getLayoutManager().scrollToPosition(position);
 				addRandomItem(position);
 				customRecyclerViewAdapter_.notifyItemInserted(position);
+
+//				customRecyclerViewAdapter_.notifyDataSetChanged();
 				break;
 		}
 	}
