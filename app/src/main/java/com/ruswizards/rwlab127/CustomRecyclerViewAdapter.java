@@ -14,7 +14,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -70,6 +70,8 @@ public class CustomRecyclerViewAdapter extends
 		if (i % 3 == 0) {
 			isIconSdkVisible = false;
 		}
+		/* -------  UNBLOCK FOR RELATIVE LAYOUT  ------
+
 		RelativeLayout.LayoutParams titleLayoutParams = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		if (!isDetailsVisible) {
@@ -83,7 +85,22 @@ public class CustomRecyclerViewAdapter extends
 		titleLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 		// Set layout params for title_text_view
 		tempView = viewHolder.itemView.findViewById(R.id.title_text_view);
+		tempView.setLayoutParams(titleLayoutParams);*/
+
+		// -------- Only for LinearLayout. Comment block if using RelativeLayout  --------
+		LinearLayout.LayoutParams titleLayoutParams = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		if (!isDetailsVisible) {
+			titleLayoutParams = new LinearLayout.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+		}
+		titleLayoutParams.leftMargin = (int) activity_.getResources()
+				.getDimension(R.dimen.recycler_view_item_inner_layout_left_padding);
+		// Set layout params for title_linear_layout
+		tempView = viewHolder.itemView.findViewById(R.id.title_linear_layout);
 		tempView.setLayoutParams(titleLayoutParams);
+		// ----------------
+
 		// Set visibility of icon_sdk
 		tempView = viewHolder.itemView.findViewById(R.id.icon_sdk);
 		if (isIconSdkVisible) {
