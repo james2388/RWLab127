@@ -6,6 +6,11 @@
  */
 package com.ruswizards.rwlab127;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,6 +113,19 @@ public class CustomRecyclerViewAdapter extends
 		} else {
 			tempView.setVisibility(View.GONE);
 		}
+
+		// Set on icon click listener
+		final CustomViewForList item = itemsList_.get(i);
+		tempView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+				intent.setData(Uri.parse("package:" + item.getTitle()));
+				activity_.startActivity(intent);
+			}
+		});
+
 		// Set visibility of details_text_view
 		tempView = viewHolder.itemView.findViewById(R.id.details_text_view);
 		if (isDetailsVisible) {
@@ -116,19 +134,25 @@ public class CustomRecyclerViewAdapter extends
 			tempView.setVisibility(View.GONE);
 		}
 		// Fill in views
-		CustomViewForList item = itemsList_.get(i);
 		viewHolder.titleTextView.setText(item.getTitle());
 		viewHolder.detailsTextView.setText(item.getDetails());
 		if (item.isIconDrawable()) {
 			viewHolder.iconImageView.setImageDrawable(item.getIconDrawable());
 		} else {
-			viewHolder.iconImageView.setImageResource(item.getIconResource());
+			try {
+				Drawable icon = activity_.getPackageManager().getApplicationIcon(item.getTitle());
+				viewHolder.iconImageView.setImageDrawable(icon);
+			} catch (PackageManager.NameNotFoundException e) {
+				e.printStackTrace();
+				viewHolder.iconImageView.setImageResource(item.getIconResource());
+			}
 		}
 		if (item.getTargetSdk() != 0) {
 			viewHolder.iconSdk.setText(String.valueOf(item.getTargetSdk()));
 		} else {
 			viewHolder.iconSdk.setText(activity_.getString(R.string.custom_view_empty_icon_sdk_text));
 		}
+
 	}
 
 	/**

@@ -70,14 +70,7 @@ public class MainActivity extends ActionBarActivity {
 			List<ApplicationInfo> applications =
 					packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
 			for (ApplicationInfo application : applications) {
-				CustomViewForList item = new CustomViewForList(
-						this,
-						String.valueOf(application.loadLabel(packageManager)
-								+ " / " + application.processName),
-						application.dataDir,
-						application.loadIcon(packageManager),
-						application.targetSdkVersion);
-				itemsList_.add(item);
+				CustomViewForList item = new CustomViewForList(this, application);
 				itemsList_.add(item);
 			}
 		}
@@ -97,14 +90,6 @@ public class MainActivity extends ActionBarActivity {
 					e.printStackTrace();
 				}
 			}
-			// TODO: figure out why it is bug here when fast swiping and uncommented below
-			/*@Override
-			public void onRemoveFinished(RecyclerView.ViewHolder item) {
-				super.onRemoveFinished(item);
-				if (!TouchListener.isTouched) {
-					customRecyclerViewAdapter_.notifyDataSetChanged();
-				}
-			}*/
 		});
 		//Set up item touch listener
 		touchListener_ = new TouchListener(this);
@@ -129,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		outState.putParcelable(STATE_LIST, (android.os.Parcelable) itemsList_);
+		outState.putSerializable(STATE_LIST, (java.io.Serializable) itemsList_);
 		outState.putBoolean(STATE_IS_SEARCHING, isSearchOpened_);
 		if (isSearchOpened_) {
 			outState.putSerializable(STATE_TEMP_LIST, (java.io.Serializable) tempList_);
@@ -145,7 +130,6 @@ public class MainActivity extends ActionBarActivity {
 		// Check if items of RecyclerView should be deleted if touch is outside RecyclerView
 		if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
 			touchListener_.checkForDeletion();
-
 		}
 		return result;
 	}

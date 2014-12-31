@@ -7,6 +7,7 @@
 package com.ruswizards.rwlab127;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -90,10 +91,21 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 		iconImageView.setImageDrawable(iconDrawable_);
 	}
 
+	/**
+	 * Constructor if icon passed as drawable
+	 */
 	public CustomViewForList(Context context, String title, String details, Drawable icon
 			, int targetSdkVersion) {
 		this(context, title, details, icon);
 		targetSdkVersion_ = targetSdkVersion;
+	}
+
+	/**
+	 * Constructor for picking up content from ApplicationInfo
+	 */
+	public CustomViewForList(Context context, ApplicationInfo application) {
+		this(context, application.packageName, application.dataDir);
+		targetSdkVersion_ = application.targetSdkVersion;
 	}
 
 	/**
