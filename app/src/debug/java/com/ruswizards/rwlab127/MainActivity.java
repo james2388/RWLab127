@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -40,7 +39,6 @@ public class MainActivity extends ActionBarActivity {
 	private static final String STATE_TEMP_LIST = "TempList";
 	private static final String STATE_IS_SEARCHING = "isSearching";
 	private static final String STATE_SEARCH_TEXT = "SearchText";
-	private static final String LOG_TAG = "MainActivity";
 
 	private CustomRecyclerViewAdapter customRecyclerViewAdapter_;
 	private List<CustomViewForList> itemsList_;
@@ -71,13 +69,15 @@ public class MainActivity extends ActionBarActivity {
 			PackageManager packageManager = getPackageManager();
 			List<ApplicationInfo> applications =
 					packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
-			for (ApplicationInfo application : applications){
+			for (ApplicationInfo application : applications) {
 				CustomViewForList item = new CustomViewForList(
 						this,
 						String.valueOf(application.loadLabel(packageManager)
 								+ " / " + application.processName),
 						application.dataDir,
-						application.loadIcon(packageManager));
+						application.loadIcon(packageManager),
+						application.targetSdkVersion);
+				itemsList_.add(item);
 				itemsList_.add(item);
 			}
 		}
@@ -85,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(linearLayoutManager);
-		recyclerView.setItemAnimator(new DefaultItemAnimator(){
+		recyclerView.setItemAnimator(new DefaultItemAnimator() {
 			@Override
 			public void onAddFinished(RecyclerView.ViewHolder item) {
 				super.onAddFinished(item);
@@ -129,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		outState.putSerializable(STATE_LIST, (java.io.Serializable) itemsList_);
+		outState.putParcelable(STATE_LIST, (android.os.Parcelable) itemsList_);
 		outState.putBoolean(STATE_IS_SEARCHING, isSearchOpened_);
 		if (isSearchOpened_) {
 			outState.putSerializable(STATE_TEMP_LIST, (java.io.Serializable) tempList_);

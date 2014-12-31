@@ -9,8 +9,6 @@
 	<dimen name="fab_container_size">66dp</dimen>
 	<dimen name="fab_pressed_padding">7dp</dimen>
 	<dimen name="fab_unpressed_padding">5dp</dimen>
-	<dimen name="fab_pressed_animation_value_to">-3dp</dimen>
-	<dimen name="fab_not_pressed_animation_value_to">0dp</dimen>
 	<dimen name="recycler_view_tile_height">71dp</dimen>
 	<dimen name="recycler_view_item_icon_size">48dp</dimen>
 	<dimen name="recycler_view_item_icon_padding">4dp</dimen>

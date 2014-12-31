@@ -38,7 +38,6 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 	private Direction swipeDirection_;
 	private View deletedView_;
 	private RecyclerView recyclerView_;
-	public static boolean isTouched;
 
 	TouchListener(MainActivity activity) {
 		activity_ = activity;
@@ -63,7 +62,6 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 		int action = event.getActionMasked();
 		switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				isTouched = true;
 				// Save touch and initial parameters
 				initialX_ = event.getX();
 				initialY_ = event.getY();
@@ -135,7 +133,6 @@ public class TouchListener implements RecyclerView.OnItemTouchListener {
 //				break;
 				return false;
 			case MotionEvent.ACTION_UP:
-				isTouched = false;
 				if (childView_ == null) {
 					return false;
 				}

@@ -25,14 +25,7 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 	private String details_;
 	private int iconResource_;
 	private Drawable iconDrawable_;
-
-	public CustomViewForList(Context context) {
-		this(context, null);
-	}
-
-	public CustomViewForList(Context context, AttributeSet attrs) {
-		this(context, attrs, 0);
-	}
+	private int targetSdkVersion_ = 0;
 
 	/**
 	 * Calls super class' constructor and inflates layout for views
@@ -44,11 +37,12 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 	}
 
 	/**
-	 * Calls {@link #CustomViewForList(android.content.Context, android.util.AttributeSet)}, saves
-	 * {@link #title_}, {@link #details_} values and fills title and details views in a view holder
+	 * Calls {@link #CustomViewForList(android.content.Context, android.util.AttributeSet, int)},
+	 * saves {@link #title_}, {@link #details_} values and fills title and details views in a view
+	 * holder
 	 */
-	public CustomViewForList (Context context, String title, String details){
-		this(context, null);
+	public CustomViewForList(Context context, String title, String details) {
+		this(context, null, 0);
 		title_ = title;
 		TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
 		titleTextView.setText(title);
@@ -96,6 +90,21 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 		iconImageView.setImageDrawable(iconDrawable_);
 	}
 
+	public CustomViewForList(Context context, String title, String details, Drawable icon
+			, int targetSdkVersion) {
+		this(context, title, details, icon);
+		targetSdkVersion_ = targetSdkVersion;
+	}
+
+	/**
+	 * Gets a target SDK version
+	 *
+	 * @return Target SDK version code
+	 */
+	public int getTargetSdk() {
+		return targetSdkVersion_;
+	}
+
 	/**
 	 * Gets a title field content
 	 *
@@ -125,17 +134,19 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 
 	/**
 	 * Gets an icon's drawable
+	 *
 	 * @return Icon's drawable
 	 */
-	public Drawable getIconDrawable(){
+	public Drawable getIconDrawable() {
 		return iconDrawable_;
 	}
 
 	/**
 	 * Check what kind of source is used for icon
+	 *
 	 * @return True if used Drawable and false otherwise
 	 */
-	public boolean isIconDrawable(){
+	public boolean isIconDrawable() {
 		return iconDrawable_ != null;
 	}
 
