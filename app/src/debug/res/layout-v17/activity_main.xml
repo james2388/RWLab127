@@ -56,5 +56,20 @@
 			android:background="@drawable/fab_shape"
 			android:contentDescription="@string/fab_description"
 			android:onClick="onClick"/>
+
+		<TextView
+			android:id="@+id/asynctask_floating_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentEnd="true"
+			android:layout_marginBottom="@dimen/fab_margin"
+			android:layout_marginEnd="@dimen/ab_async_margin_right"
+			android:layout_marginRight="@dimen/ab_async_margin_right"
+			android:background="@drawable/ab_shape"
+			android:gravity="center"
+			android:text="Async"
+			android:textColor="@android:color/white"
+			android:onClick="onClick"/>
 	</RelativeLayout>
 </org.lucasr.dspec.DesignSpecFrameLayout>

@@ -3,6 +3,7 @@
 	<dimen name="divider_height">1dp</dimen>
 	<dimen name="fab_elevation">4dp</dimen>
 	<dimen name="fab_margin">16dp</dimen>
+	<dimen name="fab_async_margin_right">88dp</dimen>
 	<dimen name="fab_size">56dp</dimen>
 	<dimen name="fab_plus_symbol_padding">16dp</dimen>
 	<dimen name="fab_plus_symbol_width">2dp</dimen>
@@ -25,4 +26,5 @@
 	<dimen name="recycler_view_tile_padding_left">12dp</dimen>
 	<dimen name="actions_image_size">10dp</dimen>
 	<dimen name="actions_image_view_padding">3dp</dimen>
+	<dimen name="ab_async_margin_right">114dp</dimen>
 </resources>

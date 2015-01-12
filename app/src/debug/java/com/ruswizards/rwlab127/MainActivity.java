@@ -6,6 +6,7 @@
  */
 package com.ruswizards.rwlab127;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
@@ -28,6 +29,7 @@ import org.lucasr.dspec.DesignSpecFrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executor;
 
 /**
  * Main activity class
@@ -243,6 +245,12 @@ public class MainActivity extends ActionBarActivity {
 				addRandomItem(position);
 				customRecyclerViewAdapter_.notifyItemInserted(position);
 				break;
+			case R.id.asynctask_floating_button:
+				// Start AsyncTask
+//				new AddItemAsyncTask(this).execute();
+				new AddItemAsyncTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				break;
+
 		}
 	}
 
@@ -251,17 +259,26 @@ public class MainActivity extends ActionBarActivity {
 	 *
 	 * @param position Position of inserting
 	 */
-	private void addRandomItem(int position) {
+	public void addRandomItem(int position) {
 		CustomViewForList customViewForList = new CustomViewForList(
 				this, randomString(3), randomString(5), new Random().nextInt(1000) / 250);
-		itemsList_.add(position, customViewForList);
+		addItem(position, customViewForList);
+	}
+
+	/**
+	 * Adds item to list
+	 *
+	 * @param position Position of inserting
+	 * @param item CustomViewForList item
+	 */
+	public void addItem(int position, CustomViewForList item) {
+		itemsList_.add(position, item);
 		if (isSearchOpened_) {
-			tempList_.add(position, customViewForList);
+			tempList_.add(position, item);
 			customRecyclerViewAdapter_.updateFilter(tempList_);
 			EditText searchEditText = (EditText) getSupportActionBar()
 					.getCustomView()
-					.findViewById(R.id
-							.search_edit_text);
+					.findViewById(R.id.search_edit_text);
 			customRecyclerViewAdapter_.getFilter().filter(searchEditText.getText());
 		}
 	}
@@ -302,7 +319,7 @@ public class MainActivity extends ActionBarActivity {
 	 * @param deletedView_ Wanted object
 	 * @throws NullPointerException Exception to throw if object not found
 	 */
-	private int findItem(List<CustomViewForList> tempList, CustomViewForList deletedView_) throws
+	public int findItem(List<CustomViewForList> tempList, CustomViewForList deletedView_) throws
 			NullPointerException {
 		for (int i = 0; i < tempList.size(); i++) {
 			if (tempList.get(i).isEqual(deletedView_)) {
@@ -320,6 +337,34 @@ public class MainActivity extends ActionBarActivity {
 	public void changeItems(List<CustomViewForList> newItems) {
 		itemsList_.clear();
 		itemsList_.addAll(newItems);
+		customRecyclerViewAdapter_.notifyDataSetChanged();
+	}
+
+	/**
+	 * Finds item in a list and sets details to specified string
+	 *
+	 * @param item Item to update
+	 * @param s Details string
+	 */
+	public void updateItemsDetail(CustomViewForList item, String s) {
+		// Update item in tempList and filters' copy of items list. Finds absolute position of
+		// updated item to do this.
+		if (isSearchOpened_) {
+			try {
+				int absolutePosition = findItem(tempList_, item);
+				tempList_.get(absolutePosition).setDetails(s);
+				customRecyclerViewAdapter_.updateFilter(tempList_);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// Update item in visible list
+		try {
+			int position = findItem(itemsList_, item);
+			itemsList_.get(position).setDetails(s);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 		customRecyclerViewAdapter_.notifyDataSetChanged();
 	}
 }

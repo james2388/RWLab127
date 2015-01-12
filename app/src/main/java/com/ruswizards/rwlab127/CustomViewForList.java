@@ -114,4 +114,8 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 		return (title_.equals(comparison.title_) && details_.equals(comparison.details_)
 				&& iconResource_ == comparison.iconResource_);
 	}
+
+	public void setDetails(String details) {
+		details_ = details;
+	}
 }
