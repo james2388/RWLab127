@@ -64,10 +64,25 @@
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentEnd="true"
 			android:layout_marginBottom="@dimen/fab_margin"
-			android:layout_marginEnd="@dimen/fab_async_margin_right"
+			android:layout_marginEnd="@dimen/async_fab_margin_right"
 			android:background="@drawable/ab_shape"
 			android:gravity="center"
 			android:text="@string/text_asynctask_floating_button"
+			android:textColor="@android:color/white"
+			android:clickable="true"
+			android:onClick="onClick"/>
+
+		<TextView
+			android:id="@+id/thread_floating_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentEnd="true"
+			android:layout_marginBottom="@dimen/fab_margin"
+			android:layout_marginEnd="@dimen/thread_fab_margin_right"
+			android:background="@drawable/ab_shape"
+			android:gravity="center"
+			android:text="@string/text_thread_floating_button"
 			android:textColor="@android:color/white"
 			android:clickable="true"
 			android:onClick="onClick"/>

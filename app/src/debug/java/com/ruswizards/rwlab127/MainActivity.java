@@ -8,6 +8,7 @@ package com.ruswizards.rwlab127;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
 
 /**
  * Main activity class
@@ -48,6 +51,7 @@ public class MainActivity extends ActionBarActivity {
 	private MenuItem searchAction_;
 	private boolean isSearchOpened_;
 	private List<CustomViewForList> tempList_;
+	private android.os.Handler handlerUiThread;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		}
 		//Set up RecyclerView
-		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+		final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(linearLayoutManager);
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -94,6 +98,27 @@ public class MainActivity extends ActionBarActivity {
 				searchEditText.setText(savedInstanceState.getString(STATE_SEARCH_TEXT));
 			}
 		}
+		// Create handler to work with AddItemThread
+		handlerUiThread = new android.os.Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what){
+					case AddItemThread.STATUS_STARTED:
+						int position = 0;
+						addItem(position, (CustomViewForList) msg.obj);
+						recyclerView.getLayoutManager().scrollToPosition(position);
+						customRecyclerViewAdapter_.notifyItemInserted(position);
+						break;
+					case AddItemThread.STATUS_MODIFY:
+						updateItemsDetail((CustomViewForList) msg.obj, String.valueOf(msg.arg1));
+						break;
+					case AddItemThread.STATUS_FINISHED:
+						updateItemsDetail((CustomViewForList) msg.obj,
+								getResources().getString(R.string.count_finished));
+						break;
+				}
+			}
+		};
 	}
 
 	@Override
@@ -249,6 +274,24 @@ public class MainActivity extends ActionBarActivity {
 				// Start AsyncTask
 //				new AddItemAsyncTask(this).execute();
 				new AddItemAsyncTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				break;
+			case R.id.thread_floating_button:
+				/*Thread addItemThread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						for (int i = 1; i <= 10; i++) {
+							//TODO: change to someMethodForThreads();
+							try {
+								TimeUnit.SECONDS.sleep(1);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							publishProgress(i);
+						}
+					}
+				});*/
+				AddItemThread addItemThread = new AddItemThread(handlerUiThread, this);
+				addItemThread.start();
 				break;
 
 		}

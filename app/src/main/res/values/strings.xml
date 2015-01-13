@@ -17,4 +17,6 @@
 	<string name="hint_search_edit_text">search here...</string>
 	<string name="item_not_found_exception">Item you are trying to find is not in a list</string>
 	<string name="text_asynctask_floating_button">Async</string>
+	<string name="count_finished">Count finished</string>
+	<string name="text_thread_floating_button">Thread</string>
 </resources>

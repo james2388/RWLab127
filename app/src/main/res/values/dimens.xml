@@ -3,7 +3,8 @@
 	<dimen name="divider_height">1dp</dimen>
 	<dimen name="fab_elevation">4dp</dimen>
 	<dimen name="fab_margin">16dp</dimen>
-	<dimen name="fab_async_margin_right">88dp</dimen>
+	<dimen name="async_fab_margin_right">88dp</dimen>
+	<dimen name="thread_fab_margin_right">160dp</dimen>
 	<dimen name="fab_size">56dp</dimen>
 	<dimen name="fab_plus_symbol_padding">16dp</dimen>
 	<dimen name="fab_plus_symbol_width">2dp</dimen>

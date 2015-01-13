@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 
-	private static final String COUNT_FINISHED = "Count finished";
 	private MainActivity activity_;
 	private CustomViewForList item_;
 	private static int itemId_ = 0;
@@ -67,7 +66,8 @@ public class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 	@Override
 	protected void onPostExecute(Void aVoid) {
 		super.onPostExecute(aVoid);
-		activity_.updateItemsDetail(item_, COUNT_FINISHED);
-		item_.setDetails(COUNT_FINISHED);
+		activity_.updateItemsDetail(item_,
+				activity_.getResources().getString(R.string.count_finished));
+		item_.setDetails(activity_.getResources().getString(R.string.count_finished));
 	}
 }
