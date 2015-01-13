@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -30,9 +29,6 @@ import org.lucasr.dspec.DesignSpecFrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
 
 /**
  * Main activity class
@@ -51,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
 	private MenuItem searchAction_;
 	private boolean isSearchOpened_;
 	private List<CustomViewForList> tempList_;
-	private android.os.Handler handlerUiThread;
+	private android.os.Handler handlerUiThread_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +58,7 @@ public class MainActivity extends ActionBarActivity {
 		if (savedInstanceState != null) {
 			itemsList_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
 			isSearchOpened_ = savedInstanceState.getBoolean(STATE_IS_SEARCHING);
+			AddItemAsyncTask.linkToActivity(this);
 			if (isSearchOpened_) {
 				tempList_ =
 						(List<CustomViewForList>) savedInstanceState.getSerializable(STATE_TEMP_LIST);
@@ -71,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
 			itemsList_ = new ArrayList<>();
 			tempList_ = new ArrayList<>();
 			for (int i = 0; i < 5; i++) {
-				addRandomItem(i);
+				itemsList_.add(generateRandomItem());
 			}
 		}
 		//Set up RecyclerView
@@ -89,25 +86,14 @@ public class MainActivity extends ActionBarActivity {
 				new DividersItemDecoration(getResources().getDrawable(R.drawable.divider),
 						(int) getResources().getDimension(R.dimen.divider_padding_left))
 		);
-		// Retain data what could not be retained earlier
-		if (savedInstanceState != null) {
-			if (isSearchOpened_) {
-				customRecyclerViewAdapter_.getFilter();
-				customRecyclerViewAdapter_.updateFilter(tempList_);
-				final EditText searchEditText = (EditText) findViewById(R.id.search_edit_text);
-				searchEditText.setText(savedInstanceState.getString(STATE_SEARCH_TEXT));
-			}
-		}
 		// Create handler to work with AddItemThread
-		handlerUiThread = new android.os.Handler(){
+		handlerUiThread_ = new android.os.Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				switch (msg.what){
+				switch (msg.what) {
 					case AddItemThread.STATUS_STARTED:
 						int position = 0;
 						addItem(position, (CustomViewForList) msg.obj);
-						recyclerView.getLayoutManager().scrollToPosition(position);
-						customRecyclerViewAdapter_.notifyItemInserted(position);
 						break;
 					case AddItemThread.STATUS_MODIFY:
 						updateItemsDetail((CustomViewForList) msg.obj, String.valueOf(msg.arg1));
@@ -119,6 +105,16 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		};
+		// Retain data what could not be retained earlier
+		if (savedInstanceState != null) {
+			AddItemThread.linkToActivity(this, handlerUiThread_);
+			if (isSearchOpened_) {
+				customRecyclerViewAdapter_.getFilter();
+				customRecyclerViewAdapter_.updateFilter(tempList_);
+				final EditText searchEditText = (EditText) findViewById(R.id.search_edit_text);
+				searchEditText.setText(savedInstanceState.getString(STATE_SEARCH_TEXT));
+			}
+		}
 	}
 
 	@Override
@@ -130,6 +126,8 @@ public class MainActivity extends ActionBarActivity {
 			final EditText searchEditText = (EditText) findViewById(R.id.search_edit_text);
 			outState.putString(STATE_SEARCH_TEXT, searchEditText.getText().toString());
 		}
+		AddItemAsyncTask.unlinkFromActivity();
+		AddItemThread.unlinkFromActivity();
 		super.onSaveInstanceState(outState);
 	}
 
@@ -214,7 +212,6 @@ public class MainActivity extends ActionBarActivity {
 		actionBar.setDisplayShowCustomEnabled(false);
 		actionBar.setCustomView(R.layout.search_bar);
 		searchAction_.setIcon(getResources().getDrawable(R.drawable.abc_ic_search_api_mtrl_alpha));
-
 		isSearchOpened_ = false;
 	}
 
@@ -264,55 +261,35 @@ public class MainActivity extends ActionBarActivity {
 		switch (v.getId()) {
 			case R.id.floating_action_button:
 				// Add element into RecycleView if floating button was pressed
-				RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 				int position = 0;
-				recyclerView.getLayoutManager().scrollToPosition(position);
-				addRandomItem(position);
-				customRecyclerViewAdapter_.notifyItemInserted(position);
+				addItem(position, generateRandomItem());
 				break;
 			case R.id.asynctask_floating_button:
 				// Start AsyncTask
 //				new AddItemAsyncTask(this).execute();
-				new AddItemAsyncTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				AddItemAsyncTask addItemAsyncTask = new AddItemAsyncTask(this);
+				addItemAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				break;
 			case R.id.thread_floating_button:
-				/*Thread addItemThread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						for (int i = 1; i <= 10; i++) {
-							//TODO: change to someMethodForThreads();
-							try {
-								TimeUnit.SECONDS.sleep(1);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							publishProgress(i);
-						}
-					}
-				});*/
-				AddItemThread addItemThread = new AddItemThread(handlerUiThread, this);
+				AddItemThread addItemThread = new AddItemThread(handlerUiThread_, this);
 				addItemThread.start();
 				break;
-
 		}
 	}
 
 	/**
-	 * Adds random item to list
-	 *
-	 * @param position Position of inserting
+	 * Generates random item for list
 	 */
-	public void addRandomItem(int position) {
-		CustomViewForList customViewForList = new CustomViewForList(
+	CustomViewForList generateRandomItem() {
+		return new CustomViewForList(
 				this, randomString(3), randomString(5), new Random().nextInt(1000) / 250);
-		addItem(position, customViewForList);
 	}
 
 	/**
 	 * Adds item to list
 	 *
 	 * @param position Position of inserting
-	 * @param item CustomViewForList item
+	 * @param item     CustomViewForList item
 	 */
 	public void addItem(int position, CustomViewForList item) {
 		itemsList_.add(position, item);
@@ -324,6 +301,9 @@ public class MainActivity extends ActionBarActivity {
 					.findViewById(R.id.search_edit_text);
 			customRecyclerViewAdapter_.getFilter().filter(searchEditText.getText());
 		}
+		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+		recyclerView.getLayoutManager().scrollToPosition(position);
+		customRecyclerViewAdapter_.notifyItemInserted(position);
 	}
 
 	/**
@@ -362,7 +342,7 @@ public class MainActivity extends ActionBarActivity {
 	 * @param deletedView_ Wanted object
 	 * @throws NullPointerException Exception to throw if object not found
 	 */
-	public int findItem(List<CustomViewForList> tempList, CustomViewForList deletedView_) throws
+	int findItem(List<CustomViewForList> tempList, CustomViewForList deletedView_) throws
 			NullPointerException {
 		for (int i = 0; i < tempList.size(); i++) {
 			if (tempList.get(i).isEqual(deletedView_)) {
@@ -387,7 +367,7 @@ public class MainActivity extends ActionBarActivity {
 	 * Finds item in a list and sets details to specified string
 	 *
 	 * @param item Item to update
-	 * @param s Details string
+	 * @param s    Details string
 	 */
 	public void updateItemsDetail(CustomViewForList item, String s) {
 		// Update item in tempList and filters' copy of items list. Finds absolute position of

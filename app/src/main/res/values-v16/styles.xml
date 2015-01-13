@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
 	<style name="TextTitle">
 		<item name="android:textSize">@dimen/text_size_subhead_material</item>
 		<item name="android:fontFamily">@string/font_family_sans_serif</item>

@@ -2,8 +2,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
 		<ripple
-			android:color="@color/accentDark"
-			xmlns:android="http://schemas.android.com/apk/res/android">
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:color="@color/accentDark">
 			<item>
 				<shape android:shape="oval">
 					<size

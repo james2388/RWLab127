@@ -25,8 +25,8 @@ public class CustomRecyclerViewAdapter extends
 		RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> implements Filterable {
 
 	private final List<CustomViewForList> listItems_;
-	private RecyclerFilter filter_;
 	private final MainActivity activity_;
+	private RecyclerFilter filter_;
 
 	public CustomRecyclerViewAdapter(List<CustomViewForList> listItems, MainActivity activity) {
 		listItems_ = listItems;
@@ -92,6 +92,7 @@ public class CustomRecyclerViewAdapter extends
 
 	/**
 	 * Method to get an items list from adapter
+	 *
 	 * @return Items list
 	 */
 	public List<CustomViewForList> getItems() {

@@ -95,6 +95,10 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 		return details_;
 	}
 
+	public void setDetails(String details) {
+		details_ = details;
+	}
+
 	/**
 	 * Gets an icon's drawable resource
 	 *
@@ -113,9 +117,5 @@ public class CustomViewForList extends LinearLayout implements Serializable {
 	public boolean isEqual(CustomViewForList comparison) {
 		return (title_.equals(comparison.title_) && details_.equals(comparison.details_)
 				&& iconResource_ == comparison.iconResource_);
-	}
-
-	public void setDetails(String details) {
-		details_ = details;
 	}
 }

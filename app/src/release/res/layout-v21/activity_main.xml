@@ -49,5 +49,5 @@
 		android:background="@drawable/fab_shape"
 		android:contentDescription="@string/fab_description"
 		android:elevation="@dimen/fab_elevation"
-		android:onClick="onClick" />
+		android:onClick="onClick"/>
 </RelativeLayout>
