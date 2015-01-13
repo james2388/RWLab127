@@ -50,13 +50,23 @@ class AddItemThread extends Thread {
 	public void run() {
 		increaseCount();
 		// Add item to list when thread started
-		CustomViewForList newItem_ = new CustomViewForList(activity_,
-				"Thread# " + String.valueOf(itemId_),
-				"Countdown..",
-				new Random().nextInt(1000) / 250);
+		CustomViewForList newItem_ = null;
+		try {
+			newItem_ = new CustomViewForList(activity_,
+					"Thread# " + String.valueOf(itemId_),
+					"Countdown..",
+					new Random().nextInt(1000) / 250);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		itemId_++;
-		Message message = handlerUiThread_.obtainMessage(STATUS_STARTED, 0, 0, newItem_);
-		handlerUiThread_.sendMessage(message);
+		Message message = null;
+		try {
+			message = handlerUiThread_.obtainMessage(STATUS_STARTED, 0, 0, newItem_);
+			handlerUiThread_.sendMessage(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// Perform long time actions
 		AddItemAsyncTask.RunnableForThreads someLongTimeAction =
 				new AddItemAsyncTask.RunnableForThreads();
@@ -71,8 +81,12 @@ class AddItemThread extends Thread {
 			newItem_.setDetails(String.valueOf(i));
 		}
 		// Send finish message
-		message = handlerUiThread_.obtainMessage(STATUS_FINISHED, 0, 0, newItem_);
-		handlerUiThread_.sendMessage(message);
+		try {
+			message = handlerUiThread_.obtainMessage(STATUS_FINISHED, 0, 0, newItem_);
+			handlerUiThread_.sendMessage(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		newItem_.setDetails(activity_.getResources().getString(R.string.count_finished));
 		decreaseCount();
 	}

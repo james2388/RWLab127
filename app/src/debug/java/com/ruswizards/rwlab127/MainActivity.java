@@ -60,6 +60,7 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 		designSpecFrameLayout_ = (DesignSpecFrameLayout) findViewById(R.id.design_spec_layout);
 		// Retain state
+		AddItemAsyncTask.linkToActivity(this);
 		if (savedInstanceState != null) {
 			itemsList_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
 			isSearchOpened_ = savedInstanceState.getBoolean(STATE_IS_SEARCHING);
@@ -82,7 +83,6 @@ public class MainActivity extends ActionBarActivity {
 				tempView = findViewById(R.id.open_actions_button);
 				tempView.setRotation(180);
 			}
-			AddItemAsyncTask.linkToActivity(this);
 			TextView actionButton = (TextView) findViewById(R.id.asynctask_floating_button);
 			if (AddItemAsyncTask.activeCount != 0) {
 				disableButton(actionButton);
@@ -143,8 +143,8 @@ public class MainActivity extends ActionBarActivity {
 			}
 		};
 		// Retain data what could not be retained earlier
+		AddItemThread.linkToActivity(this, handlerUiThread_);
 		if (savedInstanceState != null) {
-			AddItemThread.linkToActivity(this, handlerUiThread_);
 			if (isSearchOpened_) {
 				customRecyclerViewAdapter_.getFilter();
 				customRecyclerViewAdapter_.updateFilter(tempList_);

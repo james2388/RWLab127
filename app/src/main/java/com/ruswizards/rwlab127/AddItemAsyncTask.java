@@ -69,8 +69,10 @@ class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 	protected void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
 		// Update created items' details while counting
-		activity_.updateItemsDetail(item_, String.valueOf(values[0]));
-		item_.setDetails(String.valueOf(values[0]));
+		if (activity_ != null) {
+			activity_.updateItemsDetail(item_, String.valueOf(values[0]));
+			item_.setDetails(String.valueOf(values[0]));
+		}
 	}
 
 	@Override
@@ -88,11 +90,13 @@ class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 	protected void onPostExecute(Void aVoid) {
 		super.onPostExecute(aVoid);
 		// Change items' details when finished
-		activity_.updateItemsDetail(item_,
-				activity_.getResources().getString(R.string.count_finished));
-		item_.setDetails(activity_.getResources().getString(R.string.count_finished));
-		TextView asyncButton = (TextView) activity_.findViewById(R.id.asynctask_floating_button);
-		activity_.enableButton(asyncButton);
+		if (activity_ != null) {
+			activity_.updateItemsDetail(item_,
+					activity_.getResources().getString(R.string.count_finished));
+			item_.setDetails(activity_.getResources().getString(R.string.count_finished));
+			TextView asyncButton = (TextView) activity_.findViewById(R.id.asynctask_floating_button);
+			activity_.enableButton(asyncButton);
+		}
 		decreaseCount();
 	}
 
