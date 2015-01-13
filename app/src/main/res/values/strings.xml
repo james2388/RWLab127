@@ -16,4 +16,5 @@
 	<string name="description_action_icon_image_view">Action icon</string>
 	<string name="hint_search_edit_text">search here...</string>
 	<string name="item_not_found_exception">Item you are trying to find is not in a list</string>
+	<string name="text_asynctask_floating_button">Async</string>
 </resources>

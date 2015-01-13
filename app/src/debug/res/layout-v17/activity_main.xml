@@ -64,12 +64,12 @@
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentEnd="true"
 			android:layout_marginBottom="@dimen/fab_margin"
-			android:layout_marginEnd="@dimen/ab_async_margin_right"
-			android:layout_marginRight="@dimen/ab_async_margin_right"
+			android:layout_marginEnd="@dimen/fab_async_margin_right"
 			android:background="@drawable/ab_shape"
 			android:gravity="center"
-			android:text="Async"
+			android:text="@string/text_asynctask_floating_button"
 			android:textColor="@android:color/white"
+			android:clickable="true"
 			android:onClick="onClick"/>
 	</RelativeLayout>
 </org.lucasr.dspec.DesignSpecFrameLayout>
