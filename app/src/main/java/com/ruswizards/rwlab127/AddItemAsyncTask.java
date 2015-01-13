@@ -7,6 +7,8 @@
 package com.ruswizards.rwlab127;
 
 import android.os.AsyncTask;
+import android.os.Build;
+import android.widget.TextView;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  * AsyncTask for item adding
  */
 class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
+	public static int activeCount = 0;
 	private static int itemId_ = 0;
 	private static MainActivity activity_;
 	private CustomViewForList item_;
@@ -40,6 +43,7 @@ class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		increaseCount();
 		// Create and add new item for list
 		int position = 0;
 		item_ = new CustomViewForList(
@@ -50,6 +54,16 @@ class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 		);
 		itemId_++;
 		activity_.addItem(position, item_);
+		TextView asyncButton = (TextView)activity_.findViewById(R.id.asynctask_floating_button);
+		activity_.disableButton(asyncButton);
+	}
+
+	private synchronized void increaseCount() {
+		activeCount ++;
+	}
+
+	private synchronized void decreaseCount() {
+		activeCount --;
 	}
 
 	@Override
@@ -78,6 +92,9 @@ class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 		activity_.updateItemsDetail(item_,
 				activity_.getResources().getString(R.string.count_finished));
 		item_.setDetails(activity_.getResources().getString(R.string.count_finished));
+		TextView asyncButton = (TextView)activity_.findViewById(R.id.asynctask_floating_button);
+		activity_.enableButton(asyncButton);
+		decreaseCount();
 	}
 
 	/**

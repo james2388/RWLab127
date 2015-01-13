@@ -7,6 +7,7 @@
 package com.ruswizards.rwlab127;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.lucasr.dspec.DesignSpec;
@@ -34,11 +36,11 @@ import java.util.Random;
  * Main activity class
  */
 public class MainActivity extends ActionBarActivity {
-
 	private static final String STATE_LIST = "ListView";
 	private static final String STATE_TEMP_LIST = "TempList";
 	private static final String STATE_IS_SEARCHING = "isSearching";
 	private static final String STATE_SEARCH_TEXT = "SearchText";
+	public static final float ALPHA_DISABLE_BUTTON = 0.5f;
 
 	private CustomRecyclerViewAdapter customRecyclerViewAdapter_;
 	private List<CustomViewForList> itemsList_;
@@ -63,6 +65,18 @@ public class MainActivity extends ActionBarActivity {
 				tempList_ =
 						(List<CustomViewForList>) savedInstanceState.getSerializable(STATE_TEMP_LIST);
 				openSearch();
+			}
+			TextView actionButton = (TextView)findViewById(R.id.asynctask_floating_button);
+			if (AddItemAsyncTask.activeCount != 0){
+				disableButton(actionButton);
+			} else {
+				enableButton(actionButton);
+			}
+			actionButton = (TextView)findViewById(R.id.thread_floating_button);
+			if (AddItemThread.activeCount != 0){
+				disableButton(actionButton);
+			} else {
+				enableButton(actionButton);
 			}
 		} else {
 			itemsList_ = new ArrayList<>();
@@ -94,6 +108,9 @@ public class MainActivity extends ActionBarActivity {
 					case AddItemThread.STATUS_STARTED:
 						int position = 0;
 						addItem(position, (CustomViewForList) msg.obj);
+						// Disable button
+						TextView threadButton = (TextView)findViewById(R.id.thread_floating_button);
+						disableButton(threadButton);
 						break;
 					case AddItemThread.STATUS_MODIFY:
 						updateItemsDetail((CustomViewForList) msg.obj, String.valueOf(msg.arg1));
@@ -101,6 +118,9 @@ public class MainActivity extends ActionBarActivity {
 					case AddItemThread.STATUS_FINISHED:
 						updateItemsDetail((CustomViewForList) msg.obj,
 								getResources().getString(R.string.count_finished));
+						// Enable button
+						threadButton = (TextView) findViewById(R.id.thread_floating_button);
+						enableButton(threadButton);
 						break;
 				}
 			}
@@ -115,6 +135,22 @@ public class MainActivity extends ActionBarActivity {
 				searchEditText.setText(savedInstanceState.getString(STATE_SEARCH_TEXT));
 			}
 		}
+	}
+
+	public void enableButton(TextView actionButton) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+			actionButton.setBackground(getResources().getDrawable(R.drawable.ab_shape));
+		}
+		actionButton.setAlpha(1);
+		actionButton.setClickable(true);
+	}
+
+	public void disableButton(TextView actionButton) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+			actionButton.setBackground(getResources().getDrawable(R.drawable.ab_shape_busy));
+		}
+		actionButton.setAlpha(MainActivity.ALPHA_DISABLE_BUTTON);
+		actionButton.setClickable(false);
 	}
 
 	@Override

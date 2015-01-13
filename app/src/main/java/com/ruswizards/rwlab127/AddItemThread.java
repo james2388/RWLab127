@@ -20,6 +20,7 @@ class AddItemThread extends Thread {
 	public static final int STATUS_STARTED = 0;
 	public static final int STATUS_MODIFY = 1;
 	public static final int STATUS_FINISHED = 2;
+	public static int activeCount = 0;
 	private static int itemId_ = 0;
 	private static Handler handlerUiThread_;
 	private static Activity activity_;
@@ -47,6 +48,7 @@ class AddItemThread extends Thread {
 
 	@Override
 	public void run() {
+		increaseCount();
 		// Add item to list when thread started
 		CustomViewForList newItem_ = new CustomViewForList(activity_,
 				"Thread# " + String.valueOf(itemId_),
@@ -72,5 +74,15 @@ class AddItemThread extends Thread {
 		message = handlerUiThread_.obtainMessage(STATUS_FINISHED, 0, 0, newItem_);
 		handlerUiThread_.sendMessage(message);
 		newItem_.setDetails(activity_.getResources().getString(R.string.count_finished));
+		decreaseCount();
 	}
+
+	private synchronized void increaseCount() {
+		activeCount ++;
+	}
+
+	private synchronized void decreaseCount() {
+		activeCount --;
+	}
+
 }

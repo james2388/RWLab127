@@ -8,4 +8,5 @@
 	<color name="divider">#12000000</color>
 	<color name="accent">#FF5252</color>
 	<color name="accentDark">#D50000</color>
+	<color name="button_disabled">#727272</color>
 </resources>
