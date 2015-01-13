@@ -47,6 +47,8 @@
 
 		<ImageButton
 			android:id="@+id/floating_action_button"
+			android:background="@drawable/fab_shape"
+			android:contentDescription="@string/fab_description"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
@@ -55,42 +57,72 @@
 			android:layout_marginBottom="@dimen/fab_margin"
 			android:layout_marginEnd="@dimen/fab_margin"
 			android:layout_marginRight="@dimen/fab_margin"
-			android:background="@drawable/fab_shape"
-			android:contentDescription="@string/fab_description"
 			android:onClick="onClick"/>
 
 		<TextView
 			android:id="@+id/asynctask_floating_button"
+			android:background="@drawable/ab_shape"
+			android:clickable="true"
+			android:gravity="center"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentEnd="true"
 			android:layout_alignParentRight="true"
 			android:layout_marginBottom="@dimen/fab_margin"
-			android:layout_marginEnd="@dimen/async_fab_margin_right"
-			android:layout_marginRight="@dimen/async_fab_margin_right"
-			android:background="@drawable/ab_shape"
-			android:clickable="true"
-			android:gravity="center"
+			android:layout_marginEnd="@dimen/fab_margin"
+			android:layout_marginRight="@dimen/fab_margin"
 			android:onClick="onClick"
 			android:text="@string/text_asynctask_floating_button"
 			android:textColor="@android:color/white"/>
 
 		<TextView
 			android:id="@+id/thread_floating_button"
+			android:background="@drawable/ab_shape"
+			android:clickable="true"
+			android:gravity="center"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentEnd="true"
 			android:layout_alignParentRight="true"
 			android:layout_marginBottom="@dimen/fab_margin"
-			android:layout_marginEnd="@dimen/thread_fab_margin_right"
-			android:layout_marginRight="@dimen/thread_fab_margin_right"
-			android:background="@drawable/ab_shape"
-			android:clickable="true"
-			android:gravity="center"
+			android:layout_marginEnd="@dimen/fab_margin"
+			android:layout_marginRight="@dimen/fab_margin"
 			android:onClick="onClick"
 			android:text="@string/text_thread_floating_button"
 			android:textColor="@android:color/white"/>
+
+		<ImageView
+			android:background="@drawable/open_actions_button_shadow"
+			android:clickable="false"
+			android:contentDescription="@string/fab_description"
+			android:gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginBottom="@dimen/fab_margin"
+			android:layout_marginEnd="@dimen/fab_margin"
+			android:layout_marginRight="@dimen/fab_margin"/>
+
+		<TextView
+			android:id="@+id/open_actions_button"
+			android:background="@drawable/open_actions_button_shape"
+			android:clickable="true"
+			android:gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginBottom="@dimen/fab_margin"
+			android:layout_marginEnd="@dimen/fab_margin"
+			android:layout_marginRight="@dimen/fab_margin"
+			android:onClick="onClick"
+			android:text="@string/open_actions_button_text"
+			android:textColor="@android:color/white"
+			android:textSize="20sp"/>
 	</RelativeLayout>
 </org.lucasr.dspec.DesignSpecFrameLayout>

@@ -7,7 +7,6 @@
 package com.ruswizards.rwlab127;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -54,16 +53,16 @@ class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 		);
 		itemId_++;
 		activity_.addItem(position, item_);
-		TextView asyncButton = (TextView)activity_.findViewById(R.id.asynctask_floating_button);
+		TextView asyncButton = (TextView) activity_.findViewById(R.id.asynctask_floating_button);
 		activity_.disableButton(asyncButton);
 	}
 
 	private synchronized void increaseCount() {
-		activeCount ++;
+		activeCount++;
 	}
 
 	private synchronized void decreaseCount() {
-		activeCount --;
+		activeCount--;
 	}
 
 	@Override
@@ -92,7 +91,7 @@ class AddItemAsyncTask extends AsyncTask<Void, Integer, Void> {
 		activity_.updateItemsDetail(item_,
 				activity_.getResources().getString(R.string.count_finished));
 		item_.setDetails(activity_.getResources().getString(R.string.count_finished));
-		TextView asyncButton = (TextView)activity_.findViewById(R.id.asynctask_floating_button);
+		TextView asyncButton = (TextView) activity_.findViewById(R.id.asynctask_floating_button);
 		activity_.enableButton(asyncButton);
 		decreaseCount();
 	}

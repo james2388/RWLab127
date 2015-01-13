@@ -41,6 +41,8 @@ public class MainActivity extends ActionBarActivity {
 	private static final String STATE_IS_SEARCHING = "isSearching";
 	private static final String STATE_SEARCH_TEXT = "SearchText";
 	public static final float ALPHA_DISABLE_BUTTON = 0.5f;
+	private static final long ANIMATION_DURATION = 500;
+	private static final String STATE_ACTIONS_OPENED = "isActionsOpened";
 
 	private CustomRecyclerViewAdapter customRecyclerViewAdapter_;
 	private List<CustomViewForList> itemsList_;
@@ -50,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
 	private boolean isSearchOpened_;
 	private List<CustomViewForList> tempList_;
 	private android.os.Handler handlerUiThread_;
+	private boolean isActionsOpened_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +63,34 @@ public class MainActivity extends ActionBarActivity {
 		if (savedInstanceState != null) {
 			itemsList_ = (List<CustomViewForList>) savedInstanceState.getSerializable(STATE_LIST);
 			isSearchOpened_ = savedInstanceState.getBoolean(STATE_IS_SEARCHING);
-			AddItemAsyncTask.linkToActivity(this);
 			if (isSearchOpened_) {
 				tempList_ =
 						(List<CustomViewForList>) savedInstanceState.getSerializable(STATE_TEMP_LIST);
 				openSearch();
 			}
-			TextView actionButton = (TextView)findViewById(R.id.asynctask_floating_button);
-			if (AddItemAsyncTask.activeCount != 0){
+			isActionsOpened_ = savedInstanceState.getBoolean(STATE_ACTIONS_OPENED);
+			// Restore action buttons state
+			if (isActionsOpened_) {
+				float actionButtonSize = getResources().getDimension(R.dimen.fab_size);
+				float defaultMarging = getResources().getDimension(R.dimen.fab_margin);
+				View tempView = findViewById(R.id.thread_floating_button);
+				tempView.setTranslationX(-3 * (actionButtonSize + defaultMarging));
+				tempView = findViewById(R.id.asynctask_floating_button);
+				tempView.setTranslationX(-2 * (actionButtonSize + defaultMarging));
+				tempView = findViewById(R.id.floating_action_button);
+				tempView.setTranslationX(-(actionButtonSize + defaultMarging));
+				tempView = findViewById(R.id.open_actions_button);
+				tempView.setRotation(180);
+			}
+			AddItemAsyncTask.linkToActivity(this);
+			TextView actionButton = (TextView) findViewById(R.id.asynctask_floating_button);
+			if (AddItemAsyncTask.activeCount != 0) {
 				disableButton(actionButton);
 			} else {
 				enableButton(actionButton);
 			}
-			actionButton = (TextView)findViewById(R.id.thread_floating_button);
-			if (AddItemThread.activeCount != 0){
+			actionButton = (TextView) findViewById(R.id.thread_floating_button);
+			if (AddItemThread.activeCount != 0) {
 				disableButton(actionButton);
 			} else {
 				enableButton(actionButton);
@@ -109,7 +126,7 @@ public class MainActivity extends ActionBarActivity {
 						int position = 0;
 						addItem(position, (CustomViewForList) msg.obj);
 						// Disable button
-						TextView threadButton = (TextView)findViewById(R.id.thread_floating_button);
+						TextView threadButton = (TextView) findViewById(R.id.thread_floating_button);
 						disableButton(threadButton);
 						break;
 					case AddItemThread.STATUS_MODIFY:
@@ -138,7 +155,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void enableButton(TextView actionButton) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			actionButton.setBackground(getResources().getDrawable(R.drawable.ab_shape));
 		}
 		actionButton.setAlpha(1);
@@ -146,7 +163,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void disableButton(TextView actionButton) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			actionButton.setBackground(getResources().getDrawable(R.drawable.ab_shape_busy));
 		}
 		actionButton.setAlpha(MainActivity.ALPHA_DISABLE_BUTTON);
@@ -162,6 +179,7 @@ public class MainActivity extends ActionBarActivity {
 			final EditText searchEditText = (EditText) findViewById(R.id.search_edit_text);
 			outState.putString(STATE_SEARCH_TEXT, searchEditText.getText().toString());
 		}
+		outState.putBoolean(STATE_ACTIONS_OPENED, isActionsOpened_);
 		AddItemAsyncTask.unlinkFromActivity();
 		AddItemThread.unlinkFromActivity();
 		super.onSaveInstanceState(outState);
@@ -236,6 +254,7 @@ public class MainActivity extends ActionBarActivity {
 					tempList_.clear();
 					tempList_.addAll(itemsList_);
 				}
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -310,6 +329,37 @@ public class MainActivity extends ActionBarActivity {
 				AddItemThread addItemThread = new AddItemThread(handlerUiThread_, this);
 				addItemThread.start();
 				break;
+			case R.id.open_actions_button:
+				animateButtons();
+				isActionsOpened_ = !isActionsOpened_;
+				break;
+		}
+	}
+
+	/**
+	 * Animates action buttons movement
+	 */
+	private void animateButtons() {
+		float actionButtonSize = getResources().getDimension(R.dimen.fab_size);
+		float defaultMarging = getResources().getDimension(R.dimen.fab_margin);
+		if (isActionsOpened_) {
+			View tempView = findViewById(R.id.thread_floating_button);
+			tempView.animate().translationX(0).setDuration(ANIMATION_DURATION);
+			tempView = findViewById(R.id.asynctask_floating_button);
+			tempView.animate().translationX(0).setDuration(ANIMATION_DURATION);
+			tempView = findViewById(R.id.floating_action_button);
+			tempView.animate().translationX(0).setDuration(ANIMATION_DURATION);
+			tempView = findViewById(R.id.open_actions_button);
+			tempView.animate().rotation(0).setDuration(ANIMATION_DURATION);
+		} else {
+			View tempView = findViewById(R.id.thread_floating_button);
+			tempView.animate().translationX(-3 * (actionButtonSize + defaultMarging)).setDuration(ANIMATION_DURATION);
+			tempView = findViewById(R.id.asynctask_floating_button);
+			tempView.animate().translationX(-2 * (actionButtonSize + defaultMarging)).setDuration(ANIMATION_DURATION);
+			tempView = findViewById(R.id.floating_action_button);
+			tempView.animate().translationX(-(actionButtonSize + defaultMarging)).setDuration(ANIMATION_DURATION);
+			tempView = findViewById(R.id.open_actions_button);
+			tempView.animate().rotation(180).setDuration(ANIMATION_DURATION);
 		}
 	}
 

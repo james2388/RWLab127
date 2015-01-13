@@ -78,11 +78,11 @@ class AddItemThread extends Thread {
 	}
 
 	private synchronized void increaseCount() {
-		activeCount ++;
+		activeCount++;
 	}
 
 	private synchronized void decreaseCount() {
-		activeCount --;
+		activeCount--;
 	}
 
 }
