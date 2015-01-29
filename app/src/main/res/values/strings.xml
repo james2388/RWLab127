@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">RWLab127</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
+	<string name="app_name">RWLab127</string>
+	<string name="font_family_sans_serif">sans-serif</string>
+	<string name="icon_description">personal image</string>
+	<string name="menu_title_switch_base">On/off base</string>
+	<string name="menu_title_switch_key">On/off key</string>
+	<string name="menu_title_switch_spacing">On/off spacing</string>
+	<string name="text_view_title">Title</string>
+	<string name="text_view_details">Details</string>
+	<string name="toast_text">Just some short message</string>
+	<string name="fab_description">FAB</string>
+	<string name="not_linear_layout_manager_exception">DividersItemDecoration can only be used with a LinearLayoutManager.</string>
+	<string name="undo_text_view">Undo</string>
+	<string name="menu_title_search">search</string>
+	<string name="description_action_icon_image_view">Action icon</string>
+	<string name="hint_search_edit_text">search here...</string>
+	<string name="item_not_found_exception">Item you are trying to find is not in a list</string>
 </resources>
