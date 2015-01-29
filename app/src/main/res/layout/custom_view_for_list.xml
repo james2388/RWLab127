@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	android:id="@+id/item_frame_layout"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="@dimen/recycler_view_tile_height"
+	android:background="@color/background_material_dark">
+
+	<TextView
+		android:id="@+id/undo_text_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical|end"
+		android:paddingEnd="@dimen/recycler_view_tile_padding_right"
+		android:paddingRight="@dimen/recycler_view_tile_padding_right"
+		android:text="@string/undo_text_view"
+		android:textColor="@color/accent"/>
+
+	<FrameLayout
+		android:id="@+id/actions_frame_layout"
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:background="@color/ripple_color">
+		<ImageView
+			android:id="@+id/action_image_view"
+			android:contentDescription="@string/description_action_icon_image_view"
+			android:layout_gravity="end|center_vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:minHeight="@dimen/actions_image_size"
+			android:maxHeight="@dimen/actions_image_size"
+			android:paddingRight="@dimen/actions_image_view_padding"
+			android:paddingEnd="@dimen/actions_image_view_padding"
+			android:src="@android:drawable/ic_dialog_info"
+			android:visibility="gone" />
+	</FrameLayout>
+
+	<!--<RelativeLayout
+		android:id="@+id/front_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/background_material_light"
+		android:gravity="center_vertical"
+		android:paddingEnd="@dimen/recycler_view_tile_padding_right"
+		android:paddingLeft="@dimen/recycler_view_tile_padding_left"
+		android:paddingRight="@dimen/recycler_view_tile_padding_right"
+		android:paddingStart="@dimen/recycler_view_tile_padding_left"
+		android:paddingTop="20dp">
+
+		<ImageView
+			android:id="@+id/iconImageView"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentStart="true"
+			android:layout_width="@dimen/recycler_view_item_icon_size"
+			android:layout_height="@dimen/recycler_view_item_icon_size"
+			android:contentDescription="@string/icon_description"
+			android:padding="@dimen/recycler_view_item_icon_padding"/>
+		<TextView
+			android:id="@+id/title_text_view"
+			style="@style/TextTitle"
+			android:background="@android:color/holo_blue_bright"
+			android:ellipsize="end"
+			android:layout_alignParentTop="true"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="@dimen/recycler_view_item_inner_layout_left_padding"
+			android:layout_marginStart="@dimen/recycler_view_item_inner_layout_left_padding"
+			android:layout_toEndOf="@+id/iconImageView"
+			android:layout_toRightOf="@+id/iconImageView"
+			android:singleLine="true" />
+
+		<TextView
+			android:id="@+id/icon_sdk"
+			android:gravity="center"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:visibility="gone"
+			android:background="@drawable/sdk_icon" />
+
+		<TextView
+			android:id="@+id/details_text_view"
+			style="@style/TextDetails"
+			android:background="@android:color/holo_green_dark"
+			android:layout_alignParentBottom="true"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="@dimen/recycler_view_item_inner_layout_left_padding"
+			android:layout_marginStart="@dimen/recycler_view_item_inner_layout_left_padding"
+			android:layout_toEndOf="@+id/iconImageView"
+			android:layout_toRightOf="@+id/iconImageView"
+			android:requiresFadingEdge="horizontal"
+			android:fadingEdgeLength="@dimen/fading_edge_length"
+			android:ellipsize="none"
+			android:singleLine="true"
+			/>
+	</RelativeLayout>-->
+
+	<LinearLayout
+		android:id="@+id/front_layout"
+		android:background="@color/background_material_light"
+		android:gravity="center_vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:paddingEnd="@dimen/recycler_view_tile_padding_right"
+		android:paddingLeft="@dimen/recycler_view_tile_padding_left"
+		android:paddingRight="@dimen/recycler_view_tile_padding_right"
+		android:paddingStart="@dimen/recycler_view_tile_padding_left"
+		android:paddingTop="20dp">
+
+		<ImageView
+			android:id="@+id/iconImageView"
+			android:layout_width="@dimen/recycler_view_item_icon_size"
+			android:layout_height="@dimen/recycler_view_item_icon_size"
+			android:contentDescription="@string/icon_description"
+			android:padding="@dimen/recycler_view_item_icon_padding"/>
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<LinearLayout
+				android:id="@+id/title_linear_layout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal" >
+				<TextView
+					android:id="@+id/title_text_view"
+					style="@style/TextTitle"
+					android:background="@android:color/holo_blue_bright"
+					android:ellipsize="end"
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="match_parent"
+					android:singleLine="true"/>
+				<TextView
+					android:id="@+id/icon_sdk"
+					android:gravity="center"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:visibility="gone"
+					android:background="@drawable/sdk_icon"/>
+			</LinearLayout>
+
+			<TextView
+				android:id="@+id/details_text_view"
+				style="@style/TextDetails"
+				android:background="@android:color/holo_green_dark"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="@dimen/recycler_view_item_inner_layout_left_padding"
+				android:layout_marginStart="@dimen/recycler_view_item_inner_layout_left_padding"
+				android:requiresFadingEdge="horizontal"
+				android:fadingEdgeLength="@dimen/fading_edge_length"
+				android:ellipsize="none"
+				android:singleLine="true" />
+		</LinearLayout>
+	</LinearLayout>
+</FrameLayout>
