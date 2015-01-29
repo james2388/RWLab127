@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="TextTitle">
+		<item name="android:textSize">@dimen/text_size_subhead_material</item>
+		<item name="android:fontFamily">@string/font_family_sans_serif</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
+	</style>
+
+	<style name="TextDetails">
+		<item name="android:textSize">@dimen/text_size_body1_material</item>
+		<item name="android:fontFamily">@string/font_family_sans_serif</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
+	</style>
+
+	<style name="HeaderTextTitle">
+		<item name="android:textSize">@dimen/text_size_title_material</item>
+		<item name="android:fontFamily">@string/font_family_sans_serif</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
+	</style>
+</resources>
