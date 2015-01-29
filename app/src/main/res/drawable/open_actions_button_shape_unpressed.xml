@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	<!--Container-->
+	<item>
+		<shape>
+			<size
+				android:width="@dimen/fab_container_size"
+				android:height="@dimen/fab_container_size"/>
+		</shape>
+	</item>
+	<!--Button shape-->
+	<item
+		android:bottom="@dimen/fab_unpressed_padding"
+		android:left="@dimen/fab_unpressed_padding"
+		android:right="@dimen/fab_unpressed_padding"
+		android:top="@dimen/fab_unpressed_padding">
+		<shape android:shape="oval">
+			<size
+				android:width="@dimen/fab_size"
+				android:height="@dimen/fab_size"/>
+			<solid android:color="@color/accent"/>
+		</shape>
+	</item>
+</layer-list>

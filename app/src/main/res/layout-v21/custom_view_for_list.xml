@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	android:id="@+id/item_frame_layout"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="@dimen/recycler_view_tile_height"
+	android:background="@color/background_material_dark">
+
+	<TextView
+		android:id="@+id/undo_text_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical|end"
+		android:paddingEnd="@dimen/recycler_view_tile_padding_right"
+		android:text="@string/undo_text_view"
+		android:textColor="@color/accent"/>
+
+	<FrameLayout
+		android:id="@+id/actions_frame_layout"
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:background="@color/ripple_color">
+
+		<ImageView
+			android:id="@+id/action_image_view"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end|center_vertical"
+			android:contentDescription="@string/description_action_icon_image_view"
+			android:maxHeight="@dimen/actions_image_size"
+			android:minHeight="@dimen/actions_image_size"
+			android:paddingEnd="@dimen/actions_image_view_padding"
+			android:src="@android:drawable/ic_dialog_info"
+			android:visibility="gone"/>
+	</FrameLayout>
+
+	<RelativeLayout
+		android:id="@+id/front_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/background_material_light"
+		android:gravity="center_vertical"
+		android:paddingEnd="@dimen/recycler_view_tile_padding_right"
+		android:paddingStart="@dimen/recycler_view_tile_padding_left">
+
+		<ImageView
+			android:id="@+id/iconImageView"
+			android:layout_width="@dimen/recycler_view_item_icon_size"
+			android:layout_height="@dimen/recycler_view_item_icon_size"
+			android:contentDescription="@string/icon_description"
+			android:padding="@dimen/recycler_view_item_icon_padding"/>
+
+		<TextView
+			android:id="@+id/title_text_view"
+			style="@android:style/TextAppearance.Material.Subhead"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="@dimen/recycler_view_item_inner_layout_left_padding"
+			android:layout_toEndOf="@+id/iconImageView"/>
+
+		<TextView
+			android:id="@+id/details_text_view"
+			style="@android:style/TextAppearance.Material.Body1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/title_text_view"
+			android:layout_marginStart="@dimen/recycler_view_item_inner_layout_left_padding"
+			android:layout_toEndOf="@+id/iconImageView"/>
+	</RelativeLayout>
+</FrameLayout>
+
